@@ -18,6 +18,10 @@ function play(){
     gameOver();
     return;
   }
+  if ( playerMovesLeft.length = 0 ) {
+    gameOver();
+    return;
+  }
   play();
 }
 
@@ -30,7 +34,7 @@ function chooseANumber(){
   var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
-  } 
+  }
   else if (playerNum > 10 || playerNum < 1 || !playerNum) {
     console.log('Your number is out of range');
     chooseANumber();
@@ -61,7 +65,7 @@ function compare(playerNum, computerNum){
   else {
     console.log('It\'s a tie');
   }
-  
+
 }
 
 function computerLogic(){
@@ -76,7 +80,7 @@ function computerLogic(){
     }
   } else { //offensive
     return computerMovesLeft[0];
-  }   
+  }
 }
 
 function gameOver(){
