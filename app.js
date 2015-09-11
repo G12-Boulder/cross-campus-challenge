@@ -2,9 +2,7 @@ var playerMoves = [],
     computerMoves = [],
     playerPoints = 0,
     computerPoints = 0,
-    numberOfGames = 0,
-    playerGameChanger,
-    computerGameChanger;
+    numberOfGames = 0;
 
 
 function play(){
@@ -33,12 +31,10 @@ function chooseANumber(){
 function compare(playerNum, computerNum){
   if (playerNum - computerNum == 1){
     playerPoints += 2;
-    playerGameChanger = true;
     console.log('Player recieved 2 points');
   }
   else if (computerNum - playerNum == 1){
     computerPoints += 2;
-    computerGameChanger;
     console.log('Computer recieved 2 points');
   }
   else if (playerNum < computerNum){
@@ -78,7 +74,6 @@ function gameOver(){
   computerMoves = [];
   playerPoints = 0;
   computerPoints = 0;
-  numberOfGames++;
 }
 
 function updateScoreboard(playerNum, computerNum){
