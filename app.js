@@ -1,5 +1,7 @@
 var playerMoves = [],
     computerMoves = [],
+    playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+    computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     playerPoints = 0,
     computerPoints = 0,
     numberOfGames = 0,
@@ -13,6 +15,8 @@ function play(){
   compare(playerNum, computerNum);
   playerMoves.push(playerNum);
   computerMoves.push(computerNum);
+  playerMovesLeft.splice(playerMovesLeft.indexOf(playerNum), 1);
+  computerMovesLeft.splice(computerMovesLeft.indexOf(computerNum), 1);
   updateScoreboard(playerNum, computerNum);
   if (playerPoints >= 5 || computerPoints >= 5){
     gameOver();
@@ -34,20 +38,20 @@ function compare(playerNum, computerNum){
   if (playerNum - computerNum == 1){
     playerPoints += 2;
     playerGameChanger = true;
-    console.log('Player recieved 2 points');
+    console.log('Player received 2 points.  Total points: ' + playerPoints);
   }
   else if (computerNum - playerNum == 1){
     computerPoints += 2;
     computerGameChanger;
-    console.log('Computer recieved 2 points');
+    console.log('Computer received 2 points. Total points: ' + computerPoints);
   }
   else if (playerNum < computerNum){
     playerPoints++;
-    console.log('Player recieved 1 point');
+    console.log('Player received 1 point.  Total points: ' + playerPoints);
   }
   else if (computerNum < playerNum){
     computerPoints++;
-    console.log('Computer recieved 1 point');
+    console.log('Computer received 1 point. Total points: ' + computerPoints);
   }
   else {
     console.log('It\'s a tie');
@@ -55,16 +59,27 @@ function compare(playerNum, computerNum){
   
 }
 
+// function computerLogic(){
+//   // function randomize() {
+//   //   var random = (Math.ceil(Math.random() * 9));
+//   //   if (computerMoves.indexOf(random) > -1){
+//   //     return randomize();
+//   //   } else { 
+//   //     return random;
+//   //   }
+//   // }
+//   // return randomize();
+// }
+
 function computerLogic(){
-  function randomize() {
-    var random = (Math.ceil(Math.random() * 9));
-    if (computerMoves.indexOf(random) > -1){
-      return randomize();
-    } else { 
-      return random;
-    }
+  if (computerMoves.length === 0){
+    return 10;
+  };
+  if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
+    return playerMoves[playerMoves.length - 1] - 1;
+  } else {
+    return computerMovesLeft[computerMovesLeft.length - 1];
   }
-  return randomize();
 }
 
 function gameOver(){
@@ -86,6 +101,8 @@ function updateScoreboard(playerNum, computerNum){
   console.log('Player moves so far  ' + playerMoves);
   console.log('Computer chose ' + computerNum);
   console.log('Computer moves so far ' + computerMoves);
+  console.log('player moves left: ' + playerMovesLeft);
+  console.log('computerMovesLeft: ' + computerMovesLeft);
 }
 
 var playNow = prompt('Do you want to play?').toLowerCase();
