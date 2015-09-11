@@ -4,7 +4,13 @@ var playerMoves = [],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     playerPoints = 0,
     computerPoints = 0,
-    numberOfGames = 0;
+    pointsToWin = 5,
+
+    computerBoost = 5,
+    playerBoost = 2,
+    numbersLessThanComputerMove = 1,
+    numbersMoreThanComputerMove = 0;
+
 
 
 function play(){
@@ -14,7 +20,7 @@ function play(){
   updateMoves(playerMoves, playerMovesLeft, playerNum);
   updateMoves(computerMoves, computerMovesLeft, computerNum);
   updateScoreboard(playerNum, computerNum);
-  if (playerPoints >= 5 || computerPoints >= 5){
+  if (playerPoints >= pointsToWin || computerPoints >= pointsToWin){
     gameOver();
     return;
   }
@@ -64,25 +70,49 @@ function compare(playerNum, computerNum){
   
 }
 
+// function computerLogic(){
+//   if (computerMoves.length === 0){
+//     return 10;
+//   };
+//   if (playerPoints - computerPoints < 2){ //defensive strategy
+//     if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
+//       return playerMoves[playerMoves.length - 1] - 1;
+//     } else {
+//       return computerMovesLeft[computerMovesLeft.length - 1];
+//     }
+//   } else { //offensive
+//     return computerMovesLeft[0];
+//   }   
+// }
+
 function computerLogic(){
-  if (computerMoves.length === 0){
-    return 10;
-  };
-  if (playerPoints - computerPoints < 2){ //defensive strategy
-    if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
-      return playerMoves[playerMoves.length - 1] - 1;
-    } else {
-      return computerMovesLeft[computerMovesLeft.length - 1];
+  var moveWeights = [];
+  for (var i=0;i<computerMovesLeft.length;i++){
+    console.log('ran ' + i + ' times')
+    var thisMove = 0;
+    if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
+      thisMove -= playerBoost;
+      console.log('subtracted 2')
     }
-  } else { //offensive
-    return computerMovesLeft[0];
-  }   
+    for (var j=0;j<playerMovesLeft.length;j++){
+      if (playerMovesLeft[j] < computerMovesLeft[i]){
+        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= numbersLessThanComputerMove : thisMove += computerBoost;
+      } 
+      else if (playerMovesLeft[j] > computerMovesLeft[i]){
+        thisMove += numbersMoreThanComputerMove;
+      }
+    }
+    moveWeights.push(thisMove);
+    console.log(moveWeights)
+  }
+  var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
+  return computerMovesLeft[bestMove];
 }
 
 function gameOver(){
-  if (playerPoints >= 5){
+  if (playerPoints >= pointsToWin){
     console.log('Player wins');
-  } else if (computerPoints >= 5) {
+  } else if (computerPoints >= pointsToWin) {
     console.log('Computer wins')
   } else if (playerMovesLeft.length === 0) {
     console.log('Tie game.')
