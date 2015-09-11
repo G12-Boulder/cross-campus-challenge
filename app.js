@@ -27,7 +27,7 @@ function updateMoves(moves, movesLeft, chosenNumber){
 }
 
 function chooseANumber(){
-  var playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']'));
+  var playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
   } 
@@ -41,6 +41,7 @@ function chooseANumber(){
 }
 
 function compare(playerNum, computerNum){
+  console.log('-------------------------------------------------------')
   if (playerNum - computerNum == 1){
     playerPoints += 2;
     console.log('Player received 2 points.  Total points: ' + playerPoints);
@@ -67,11 +68,15 @@ function computerLogic(){
   if (computerMoves.length === 0){
     return 10;
   };
-  if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
-    return playerMoves[playerMoves.length - 1] - 1;
-  } else {
-    return computerMovesLeft[computerMovesLeft.length - 1];
-  }
+  if (playerPoints - computerPoints < 2){ //defensive strategy
+    if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
+      return playerMoves[playerMoves.length - 1] - 1;
+    } else {
+      return computerMovesLeft[computerMovesLeft.length - 1];
+    }
+  } else { //offensive
+    return computerMovesLeft[0];
+  }   
 }
 
 function gameOver(){
