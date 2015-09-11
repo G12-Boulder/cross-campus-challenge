@@ -1,5 +1,9 @@
-var readlineSync = require('readline-sync');
+var isNode=new Function("try {return this===global;}catch(e){return false;}");
+var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
 
+if (isNode) {
+  var readlineSync = require('readline-sync');
+}
 var playerMoves = [],
     computerMoves = [],
     playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
@@ -30,12 +34,13 @@ function updateMoves(moves, movesLeft, chosenNumber){
 
 function chooseANumber(){
   var playerNum = 0;
-  if (window) {
+  if (isNode) {
+    playerNum = Number(readlineSync.question("Pick a number that isn't one of the following: " + playerMoves + "\n"));
+  }
+  else if (isBrowser) {
       playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
   }
-  else if(process) {
-    playerNum = Number(readlineSync.question("Pick a number that isn't " + playerMoves));
-  }
+
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
   }
@@ -113,11 +118,10 @@ function updateScoreboard(playerNum, computerNum){
 }
 
 var playNow = '';
-if (window) {
+if (isNode) {
+  playNow = readlineSync.question('Do you want to play?').toLowerCase();
+} else if(isBrowser) {
   playNow = prompt('Do you want to play?').toLowerCase();
-}
-else if(process) {
-    playerNum = Number(readlineSync.question('Do you want to play?'));
 }
 if (playNow == 'yes'){
   play();
