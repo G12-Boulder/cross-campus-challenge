@@ -23,7 +23,12 @@ function chooseANumber(){
   var playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']'));
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
-  } else {
+  } 
+  else if (playerNum > 10 || playerNum < 1) {
+    console.log('Your number is out of range');
+    chooseANumber();
+  }
+    else {
     return playerNum;
   }
 }
