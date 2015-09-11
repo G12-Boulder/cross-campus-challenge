@@ -27,11 +27,11 @@ function updateMoves(moves, movesLeft, chosenNumber){
 }
 
 function chooseANumber(){
-  var playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
+  var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
   } 
-  else if (playerNum > 10 || playerNum < 1) {
+  else if (playerNum > 10 || playerNum < 1 || !playerNum) {
     console.log('Your number is out of range');
     chooseANumber();
   }
@@ -82,11 +82,9 @@ function computerLogic(){
 function gameOver(){
   if (playerPoints >= 5){
     console.log('Player wins');
-  }
-  if (computerPoints >= 5){
+  } else if (computerPoints >= 5) {
     console.log('Computer wins')
-  }
-  if (playerMovesLeft.length === 0){
+  } else if (playerMovesLeft.length === 0) {
     console.log('Tie game.')
   }
   playerMoves = [];
