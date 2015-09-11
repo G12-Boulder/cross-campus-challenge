@@ -11,16 +11,19 @@ function play(){
   var playerNum = chooseANumber();
   var computerNum = computerLogic();
   compare(playerNum, computerNum);
-  playerMoves.push(playerNum);
-  computerMoves.push(computerNum);
-  playerMovesLeft.splice(playerMovesLeft.indexOf(playerNum), 1);
-  computerMovesLeft.splice(computerMovesLeft.indexOf(computerNum), 1);
+  updateMoves(playerMoves, playerMovesLeft, playerNum);
+  updateMoves(computerMoves, computerMovesLeft, computerNum);
   updateScoreboard(playerNum, computerNum);
   if (playerPoints >= 5 || computerPoints >= 5){
     gameOver();
     return;
   }
   play();
+}
+
+function updateMoves(moves, movesLeft, chosenNumber){
+  moves.push(chosenNumber);
+  movesLeft.splice(movesLeft.indexOf(chosenNumber), 1);
 }
 
 function chooseANumber(){
@@ -55,18 +58,6 @@ function compare(playerNum, computerNum){
   
 }
 
-// function computerLogic(){
-//   // function randomize() {
-//   //   var random = (Math.ceil(Math.random() * 9));
-//   //   if (computerMoves.indexOf(random) > -1){
-//   //     return randomize();
-//   //   } else { 
-//   //     return random;
-//   //   }
-//   // }
-//   // return randomize();
-// }
-
 function computerLogic(){
   if (computerMoves.length === 0){
     return 10;
@@ -84,6 +75,9 @@ function gameOver(){
   }
   if (computerPoints >= 5){
     console.log('Computer wins')
+  }
+  if (playerMovesLeft.length === 0){
+    console.log('Tie game.')
   }
   playerMoves = [];
   computerMoves = [];
