@@ -1,3 +1,5 @@
+var readlineSync = require('readline-sync');
+
 var playerMoves = [],
     computerMoves = [],
     playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
@@ -27,10 +29,16 @@ function updateMoves(moves, movesLeft, chosenNumber){
 }
 
 function chooseANumber(){
-  var playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
+  var playerNum = 0;
+  if (window) {
+      playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
+  }
+  else if(process) {
+    playerNum = Number(readlineSync.question("Pick a number that isn't " + playerMoves));
+  }
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
-  } 
+  }
   else if (playerNum > 10 || playerNum < 1) {
     console.log('Your number is out of range');
     chooseANumber();
@@ -61,7 +69,7 @@ function compare(playerNum, computerNum){
   else {
     console.log('It\'s a tie');
   }
-  
+
 }
 
 function computerLogic(){
@@ -76,7 +84,7 @@ function computerLogic(){
     }
   } else { //offensive
     return computerMovesLeft[0];
-  }   
+  }
 }
 
 function gameOver(){
@@ -104,7 +112,13 @@ function updateScoreboard(playerNum, computerNum){
   console.log('computerMovesLeft: ' + computerMovesLeft);
 }
 
-var playNow = prompt('Do you want to play?').toLowerCase();
+var playNow = '';
+if (window) {
+  playNow = prompt('Do you want to play?').toLowerCase();
+}
+else if(process) {
+    playerNum = Number(readlineSync.question('Do you want to play?'));
+}
 if (playNow == 'yes'){
   play();
 }
