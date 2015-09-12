@@ -4,12 +4,10 @@ var isBrowser=new Function("try {return this===window;}catch(e){ return false;}"
 if (isNode) {
   var readlineSync = require('readline-sync');
 }
-var playerMoves = [],
-    computerMoves = [],
-    playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
-    playerPoints = 0,
-    computerPoints = 0,
+    playerScore = 0,
+    computerScore = 0,
     pointsToWin = 5,
 
     //Algorithm weight modifiers
@@ -24,10 +22,10 @@ function play(){
   var playerNum = chooseANumber();
   var computerNum = computerLogic();
   compare(playerNum, computerNum);
-  updateMoves(playerMoves, playerMovesLeft, playerNum);
-  updateMoves(computerMoves, computerMovesLeft, computerNum);
+  updateMoves(previousMoves(playerMovesLeft), playerMovesLeft, playerNum);
+  updateMoves(previousMoves(computerMovesLeft), computerMovesLeft, computerNum);
   updateScoreboard(playerNum, computerNum);
-  if (playerPoints >= pointsToWin || computerPoints >= pointsToWin || playerMovesLeft.length === 0){
+  if (playerScore >= pointsToWin || computerScore >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
     return;
   }
@@ -45,16 +43,16 @@ function chooseANumber(){
     if (isNode) {
       playerNum = Number(readlineSync
           .question("Pick a number that isn't one of the following: "
-          + playerMoves + "\n"
+          + previousMoves(playerMovesLeft) + "\n"
           + "Your current score is "
-          + playerPoints + "\n"
+          + playerScore + "\n"
           + "The computer's current score is"
-          + computerPoints + "\n"));
+          + computerScore + "\n"));
     }
     else if (isBrowser) {
       playerNum = Number(prompt('Pick a number, bitch\nYour current score is '
-            + playerPoints + '\nThe computer\'s current score is '
-            + computerPoints));
+            + playerScore + '\nThe computer\'s current score is '
+            + computerScore));
     }
   }
   return playerNum;
@@ -64,20 +62,20 @@ function chooseANumber(){
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
   if (playerNum - computerNum == 1){
-    playerPoints += 2;
-    console.log('Player received 2 points.  Total points: ' + playerPoints);
+    playerScore += 2;
+    console.log('Player received 2 points.  Total points: ' + playerScore);
   }
   else if (computerNum - playerNum == 1){
-    computerPoints += 2;
-    console.log('Computer received 2 points. Total points: ' + computerPoints);
+    computerScore += 2;
+    console.log('Computer received 2 points. Total points: ' + computerScore);
   }
   else if (playerNum < computerNum){
-    playerPoints++;
-    console.log('Player received 1 point.  Total points: ' + playerPoints);
+    playerScore++;
+    console.log('Player received 1 point.  Total points: ' + playerScore);
   }
   else if (computerNum < playerNum){
-    computerPoints++;
-    console.log('Computer received 1 point. Total points: ' + computerPoints);
+    computerScore++;
+    console.log('Computer received 1 point. Total points: ' + computerScore);
   }
   else {
     console.log('It\'s a tie');
@@ -88,7 +86,7 @@ function compare(playerNum, computerNum){
 //   if (computerMoves.length === 0){
 //     return 10;
 //   };
-//   if (playerPoints - computerPoints < 2){ //defensive strategy
+//   if (playerScore - computerScore < 2){ //defensive strategy
 //     if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
 //       return playerMoves[playerMoves.length - 1] - 1;
 //     } else {
@@ -162,24 +160,31 @@ function isGt(a, b) {
 
 
 function gameOver(){
-  if (playerPoints >= pointsToWin){
+  if (playerScore >= pointsToWin){
     console.log('Player wins');
-  } else if (computerPoints >= pointsToWin) {
+  } else if (computerScore >= pointsToWin) {
     console.log('Computer wins')
   } else if (playerMovesLeft.length === 0) {
     console.log('Tie game.')
   }
-  playerMoves = [];
-  computerMoves = [];
-  playerPoints = 0;
-  computerPoints = 0;
+  //computerMoves = [];
+  playerScore = 0;
+  computerScore = 0;
+}
+
+function previousMoves(prevMovesArray) {
+  var output = [];
+  for ( var i = 1 ; i < 11 ; i++ ) {
+    if ( prevMovesArray.indexOf(i) == -1 ) {output.push(i)}
+  }
+  return output;
 }
 
 function updateScoreboard(playerNum, computerNum){
-  console.log('Player chose ' + playerNum);
-  console.log('Computer chose ' + computerNum);
-  console.log('Player moves so far  ' + playerMoves);
-  console.log('Computer moves so far ' + computerMoves);
+  console.log('Player chose ' + playerNum + "\t\t"
+            + 'Computer chose ' + computerNum);
+  console.log('Player moves so far  ' + previousMoves(playerMovesLeft));
+  console.log('Computer moves so far ' + previousMoves(computerMovesLeft));
   console.log('player moves left: ' + playerMovesLeft);
   console.log('computer moves left: ' + computerMovesLeft);
   //console.log(weightArray());
