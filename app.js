@@ -18,6 +18,10 @@ function play(){
     gameOver();
     return;
   }
+  if ( playerMovesLeft.length = 0 ) {
+    gameOver();
+    return;
+  }
   play();
 }
 
