@@ -39,14 +39,12 @@ function updateMoves(moves, movesLeft, chosenNumber){
 
 function chooseANumber(){
   var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
-<<<<<<< HEAD
+
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
   }
   else if (playerNum > 10 || playerNum < 1 || !playerNum) {
-=======
   if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
->>>>>>> 5565c9955b48f68aaa98f07c67b749a7d5bc46a8
     console.log('Your number is out of range');
     chooseANumber();
   } else {
@@ -102,13 +100,10 @@ function computerLogic(){
     }
     for (var j=0;j<playerMovesLeft.length;j++){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
-<<<<<<< HEAD
         playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= numbersLessThanComputerMove : thisMove += computerBoost;
       }
-=======
         playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
-      } 
->>>>>>> 5565c9955b48f68aaa98f07c67b749a7d5bc46a8
+      }
       else if (playerMovesLeft[j] > computerMovesLeft[i]){
         thisMove += computerGets1;
       }
