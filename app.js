@@ -96,7 +96,6 @@ function compare(playerNum, computerNum){
 // }
 
 function computerLogic(){
-  console.log(weightArray());
   var moveWeights = [];
   for (var i=0;i<computerMovesLeft.length;i++){
     var thisMove = 0;
@@ -179,6 +178,7 @@ function updateScoreboard(playerNum, computerNum){
   console.log('Computer moves so far ' + computerMoves);
   console.log('player moves left: ' + playerMovesLeft);
   console.log('computer moves left: ' + computerMovesLeft);
+  console.log(weightArray());
 }
 
 var playNow = '';
