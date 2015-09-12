@@ -41,18 +41,23 @@ function updateMoves(moves, movesLeft, chosenNumber){
 
 function chooseANumber(){
   var playerNum = 0;
-  if (isNode) {
-    playerNum = Number(readlineSync.question("Pick a number that isn't one of the following: " + playerMoves + "\n"));
+  while(playerMovesLeft.indexOf(playerNum) == -1)  {
+    if (isNode) {
+      playerNum = Number(readlineSync
+          .question("Pick a number that isn't one of the following: "
+          + playerMoves + "\n"
+          + "Your current score is "
+          + playerPoints + "\n"
+          + "The computer's current score is"
+          + computerPoints + "\n"));
+    }
+    else if (isBrowser) {
+      playerNum = Number(prompt('Pick a number, bitch\nYour current score is '
+            + playerPoints + '\nThe computer\'s current score is '
+            + computerPoints));
+    }
   }
-  else if (isBrowser) {
-    playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
-  }
-  if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
-    console.log('Your number is out of range');
-    chooseANumber();
-  } else {
-    return playerNum;
-  }
+  return playerNum;
 }
 
 
