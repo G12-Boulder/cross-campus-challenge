@@ -1,14 +1,28 @@
-function probabilityOfLowerThan(opponentArray, number) {
-  function go(array, num, probability) {
-    if (array.length == 0) { return (probability / opponentArray.length); }
+var computerMovesLeft = [1,2,8,4,5];
+var playerMovesLeft = [1,2,7,4,10];
+var weightArray = computerMovesLeft.map(function(element) {
+  return {
+    numberInComputerHand : element,
+    ltRatio: makeRatio(playerMovesLeft, element, isLt),
+    gtRatio: makeRatio(playerMovesLeft, element, isGt)
+  };
+})
 
-    if (array[0] < num) { probability += 1; }
-    return go(array.slice(1), num, probability)
+console.log("**TESTING** current weight array:", weightArray);
+function makeRatio(opponentArray, number, comparisonFn) {
+  // returns the percentage of the numbers lower than the numbers
+  // in the oppponentArray as a ratio. comparisonFn is either isLt or isGt.
+  function go(array, num, ratioNumer) {
+    if (array.length == 0) { return (ratioNumer / opponentArray.length); }
+
+    if (comparisonFn(array[0], num)) { ratioNumer += 1; }
+    return go(array.slice(1), num, ratioNumer)
   }
   return go(opponentArray, number, 0);
-};
-
-//console.log(probabilityOfLowerThan([1,2,7,9], 4)); // 0.5
-//console.log(probabilityOfLowerThan([3,5,1,8], 4)); // 0.5
-
-
+}
+function isLt(a, b) { // pronounced a is Less than b
+  return (a < b);
+}
+function isGt(a, b) {
+  return (a > b);
+}
