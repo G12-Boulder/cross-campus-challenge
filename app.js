@@ -83,6 +83,35 @@ function computerLogic(){
   }
 }
 
+// first part, determine which P(x) where P(x) is probability of x occuring.
+// In our case, x is the probability of getting a point.
+// The way to do that, is to compare each currently available number
+// on the computers side, to the availalbe numbers in the opponents "hand"
+// So, for example . . .
+// If the remaining numbers of the opponent are [1, 4, 7]
+// and our computers remaining numbers are [3, 8, 5] . . .
+// the possibility of 3 getting a point is 2/3.
+// multiplied by (2 out of opponents 3 numbers);  So 2/3.
+// The P(X) for 8 is 0, we have 0 chance of 8 being lower than the opponents
+// number.  Which does not make it a bad choice while the opponents score
+// is below 3...
+// the P(X) for 5 is 1/3.  So we should prob. choose 3.
+
+function probabilityOfLowerThan(opponentArray, number) {
+  // returns the "random" chance of the number being lower than the numbers
+  // in the oppponentArray as a ratio.
+  function go(array, num, probability) {
+    if (array.length == 0) { return (probability / opponentArray.length); }
+
+    if (array[0] < num) { probability += 1; }
+    return go(array.slice(1), num, probability)
+  }
+  return go(opponentArray, number, 0);
+}
+
+
+
+
 function gameOver(){
   if (playerPoints >= 5){
     console.log('Player wins');
