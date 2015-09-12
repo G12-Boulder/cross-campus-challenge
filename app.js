@@ -43,7 +43,6 @@ function chooseANumber(){
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
   }
-  else if (playerNum > 10 || playerNum < 1 || !playerNum) {
   if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
     console.log('Your number is out of range');
     chooseANumber();
@@ -51,6 +50,7 @@ function chooseANumber(){
     return playerNum;
   }
 }
+
 
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
