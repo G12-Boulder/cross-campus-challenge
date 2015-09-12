@@ -82,7 +82,6 @@ function compare(playerNum, computerNum){
   else {
     console.log('It\'s a tie');
   }
-
 }
 
 // function computerLogic(){
@@ -183,7 +182,7 @@ function updateScoreboard(playerNum, computerNum){
   console.log('Computer moves so far ' + computerMoves);
   console.log('player moves left: ' + playerMovesLeft);
   console.log('computer moves left: ' + computerMovesLeft);
-  console.log(weightArray());
+  //console.log(weightArray());
 }
 
 var playNow = '';
