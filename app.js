@@ -108,9 +108,6 @@ function computerLogic(){
         thisMove += computerGets1;
       }
     }
-  } else { //offensive
-    return computerMovesLeft[0];
-  }
     moveWeights.push(thisMove);
   }
   var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
