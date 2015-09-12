@@ -50,8 +50,10 @@ function chooseANumber(){
           + computerScore + "\n"));
     }
     else if (isBrowser) {
-      playerNum = Number(prompt('Pick a number, bitch\nYour current score is '
-            + playerScore + '\nThe computer\'s current score is '
+      playerNum = Number(prompt('Pick a number, bitch\n'
+            + 'Your current score is '
+            + playerScore
+            + '\nThe computer\'s current score is '
             + computerScore));
     }
   }
@@ -167,17 +169,19 @@ function gameOver(){
   } else if (playerMovesLeft.length === 0) {
     console.log('Tie game.')
   }
-  //computerMoves = [];
   playerScore = 0;
   computerScore = 0;
 }
 
 function previousMoves(prevMovesArray) {
-  var output = [];
-  for ( var i = 1 ; i < 11 ; i++ ) {
-    if ( prevMovesArray.indexOf(i) == -1 ) {output.push(i)}
+  function go(movesCollection, counter) {
+    if (counter == 11) { return movesCollection; }
+    if (prevMovesArray.indexOf(counter) == - 1) {
+      movesCollection.push(counter);
+    }
+    return go(movesCollection, ++counter);
   }
-  return output;
+  return go([], 1);
 }
 
 function updateScoreboard(playerNum, computerNum){
