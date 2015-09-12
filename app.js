@@ -20,7 +20,7 @@ function play(){
   updateMoves(playerMoves, playerMovesLeft, playerNum);
   updateMoves(computerMoves, computerMovesLeft, computerNum);
   updateScoreboard(playerNum, computerNum);
-  if (playerPoints >= pointsToWin || computerPoints >= pointsToWin){
+  if (playerPoints >= pointsToWin || computerPoints >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
     return;
   }
@@ -92,7 +92,6 @@ function computerLogic(){
     var thisMove = 0;
     if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
       thisMove -= playerBoost;
-      console.log('subtracted 2')
     }
     for (var j=0;j<playerMovesLeft.length;j++){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
@@ -103,7 +102,6 @@ function computerLogic(){
       }
     }
     moveWeights.push(thisMove);
-    console.log(moveWeights)
   }
   var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
   return computerMovesLeft[bestMove];
