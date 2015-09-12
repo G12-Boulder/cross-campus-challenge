@@ -137,7 +137,7 @@ function probabilityOfLowerThan(opponentArray, number) {
   function go(array, num, probability) {
     if (array.length == 0) { return (probability / opponentArray.length); }
 
-    if (array[0] < num) { probability += 1; }
+    if (array[0] > num) { probability += 1; }
     return go(array.slice(1), num, probability)
   }
   return go(opponentArray, number, 0);
