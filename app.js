@@ -5,7 +5,8 @@ var playerMoves = [],
     playerPoints = 0,
     computerPoints = 0,
     pointsToWin = 5,
-
+    
+    //Algorithm weight modifiers
     computerBoost = 5,
     playerBoost = 2,
     numbersLessThanComputerMove = 1,
