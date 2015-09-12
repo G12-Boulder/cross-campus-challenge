@@ -130,8 +130,8 @@ function updateScoreboard(playerNum, computerNum){
   console.log('computerMovesLeft: ' + computerMovesLeft);
 }
 
-var playNow = prompt('Do you want to play?').toLowerCase();
-if (playNow == 'yes'){
+var playNow = confirm('Are you ready to play?');
+if (playNow == true){
   play();
 }
 
