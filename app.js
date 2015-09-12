@@ -7,10 +7,10 @@ var playerMoves = [],
     pointsToWin = 5,
 
     //Algorithm weight modifiers
-    computerBoost = 5,
-    playerBoost = 2,
-    numbersLessThanComputerMove = 1,
-    numbersMoreThanComputerMove = 0;
+    computerGets2 = 5,
+    playerGets2 = 2,
+    playerGets1 = 1,
+    computerGets1 = 0;
 
 
 
@@ -35,14 +35,10 @@ function updateMoves(moves, movesLeft, chosenNumber){
 
 function chooseANumber(){
   var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
-  if (playerMoves.indexOf(playerNum) > -1){
-    chooseANumber();
-  } 
-  else if (playerNum > 10 || playerNum < 1 || !playerNum) {
+  if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
     console.log('Your number is out of range');
     chooseANumber();
-  }
-    else {
+  } else {
     return playerNum;
   }
 }
@@ -89,17 +85,16 @@ function compare(playerNum, computerNum){
 function computerLogic(){
   var moveWeights = [];
   for (var i=0;i<computerMovesLeft.length;i++){
-    console.log('ran ' + i + ' times')
     var thisMove = 0;
     if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
-      thisMove -= playerBoost;
+      thisMove -= playerGets2;
     }
     for (var j=0;j<playerMovesLeft.length;j++){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
-        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= numbersLessThanComputerMove : thisMove += computerBoost;
+        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
       } 
       else if (playerMovesLeft[j] > computerMovesLeft[i]){
-        thisMove += numbersMoreThanComputerMove;
+        thisMove += computerGets1;
       }
     }
     moveWeights.push(thisMove);
