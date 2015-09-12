@@ -10,7 +10,14 @@ var playerMoves = [],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     playerPoints = 0,
     computerPoints = 0,
-    numberOfGames = 0;
+    pointsToWin = 5,
+
+    //Algorithm weight modifiers
+    computerGets2 = 5,
+    playerGets2 = 2,
+    playerGets1 = 1,
+    computerGets1 = 0;
+
 
 
 function play(){
@@ -20,7 +27,7 @@ function play(){
   updateMoves(playerMoves, playerMovesLeft, playerNum);
   updateMoves(computerMoves, computerMovesLeft, computerNum);
   updateScoreboard(playerNum, computerNum);
-  if (playerPoints >= 5 || computerPoints >= 5){
+  if (playerPoints >= pointsToWin || computerPoints >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
     return;
   }
@@ -34,24 +41,25 @@ function updateMoves(moves, movesLeft, chosenNumber){
 
 function chooseANumber(){
   var playerNum = 0;
-  if (isNode) {
-    playerNum = Number(readlineSync.question("Pick a number that isn't one of the following: " + playerMoves + "\n"));
+  while(playerMovesLeft.indexOf(playerNum) == -1)  {
+    if (isNode) {
+      playerNum = Number(readlineSync
+          .question("Pick a number that isn't one of the following: "
+          + playerMoves + "\n"
+          + "Your current score is "
+          + playerPoints + "\n"
+          + "The computer's current score is"
+          + computerPoints + "\n"));
+    }
+    else if (isBrowser) {
+      playerNum = Number(prompt('Pick a number, bitch\nYour current score is '
+            + playerPoints + '\nThe computer\'s current score is '
+            + computerPoints));
+    }
   }
-  else if (isBrowser) {
-      playerNum = Number(prompt('Pick a number, bitch\nNot any of these [' + playerMoves + ']\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
-  }
-
-  if (playerMoves.indexOf(playerNum) > -1){
-    chooseANumber();
-  }
-  else if (playerNum > 10 || playerNum < 1) {
-    console.log('Your number is out of range');
-    chooseANumber();
-  }
-    else {
-    return playerNum;
-  }
+  return playerNum;
 }
+
 
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
@@ -77,29 +85,89 @@ function compare(playerNum, computerNum){
 
 }
 
+// function computerLogic(){
+//   if (computerMoves.length === 0){
+//     return 10;
+//   };
+//   if (playerPoints - computerPoints < 2){ //defensive strategy
+//     if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
+//       return playerMoves[playerMoves.length - 1] - 1;
+//     } else {
+//       return computerMovesLeft[computerMovesLeft.length - 1];
+//     }
+//   } else { //offensive
+//     return computerMovesLeft[0];
+//   }
+// }
+
 function computerLogic(){
-  if (computerMoves.length === 0){
-    return 10;
-  };
-  if (playerPoints - computerPoints < 2){ //defensive strategy
-    if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
-      return playerMoves[playerMoves.length - 1] - 1;
-    } else {
-      return computerMovesLeft[computerMovesLeft.length - 1];
+  var moveWeights = [];
+  for (var i=0;i<computerMovesLeft.length;i++){
+    var thisMove = 0;
+    if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
+      thisMove -= playerGets2;
     }
-  } else { //offensive
-    return computerMovesLeft[0];
+    for (var j=0;j<playerMovesLeft.length;j++){
+      if (playerMovesLeft[j] < computerMovesLeft[i]){
+        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
+      }
+      else if (playerMovesLeft[j] > computerMovesLeft[i]) {
+        thisMove += computerGets1;
+      }
+    }
+    moveWeights.push(thisMove);
   }
+  var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
+  return computerMovesLeft[bestMove];
 }
 
+// Sooooo here's some spec:
+// the data-structure I've built my functions to return and work with
+// is an Object, with 3 fields guaranteed (and others can be added or not)
+// { number: numberInHand, ltRatio: (double between 0 and 1),
+//   gtRatio: (double between 0 and 1) }
+//   where ltRatio is . . .(quantOfOpponentsHandGreaterThanNumber/opponentsHand.length)
+//   and gtRatio is . . .(quantOfOpponentsHandLessThanNumber/opponentsHand.length)
+
+function weightArray () {
+  return computerMovesLeft.map(function(element) {
+    return {
+      numberInComputerHand : element,
+      ltRatio: makeRatio(playerMovesLeft, element, isGt),
+      gtRatio: makeRatio(playerMovesLeft, element, isLt)
+    };
+  })
+}
+
+//console.log("***TESTING*** Weight Array Changes with each turn?");
+//console.log(weightArray());
+
+function makeRatio(opponentArray, number, comparisonFn) {
+  // returns the percentage of the numbers lower than the numbers
+  // in the oppponentArray as a ratio. comparisonFn is either isLt or isGt.
+  function go(array, num, ratioNumer) {
+    if (array.length == 0) { return (ratioNumer / opponentArray.length); }
+
+    if (comparisonFn(array[0], num)) { ratioNumer += 1; }
+    return go(array.slice(1), num, ratioNumer)
+  }
+  return go(opponentArray, number, 0);
+}
+function isLt(a, b) { // pronounced a is Less than b
+  return (a < b);
+}
+function isGt(a, b) {
+  return (a > b);
+}
+
+
+
 function gameOver(){
-  if (playerPoints >= 5){
+  if (playerPoints >= pointsToWin){
     console.log('Player wins');
-  }
-  if (computerPoints >= 5){
+  } else if (computerPoints >= pointsToWin) {
     console.log('Computer wins')
-  }
-  if (playerMovesLeft.length === 0){
+  } else if (playerMovesLeft.length === 0) {
     console.log('Tie game.')
   }
   playerMoves = [];
@@ -110,33 +178,21 @@ function gameOver(){
 
 function updateScoreboard(playerNum, computerNum){
   console.log('Player chose ' + playerNum);
-  console.log('Player moves so far  ' + playerMoves);
   console.log('Computer chose ' + computerNum);
+  console.log('Player moves so far  ' + playerMoves);
   console.log('Computer moves so far ' + computerMoves);
   console.log('player moves left: ' + playerMovesLeft);
-  console.log('computerMovesLeft: ' + computerMovesLeft);
+  console.log('computer moves left: ' + computerMovesLeft);
+  console.log(weightArray());
 }
 
 var playNow = '';
 if (isNode) {
   playNow = readlineSync.question('Do you want to play?').toLowerCase();
 } else if(isBrowser) {
-  playNow = prompt('Do you want to play?').toLowerCase();
+  playNow = confirm('Do you want to play?').toLowerCase();
 }
 if (playNow == 'yes'){
   play();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
