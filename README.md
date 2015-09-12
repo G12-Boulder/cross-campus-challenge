@@ -1,6 +1,6 @@
 # Cross Campus Challenge
-You're either first or your last.
-###Fork and Clone. You know what to do.
+This is the version with CLI support for playing and other various
+mods that I feel are important. (readability etc)
 
 ###Rules
 
@@ -16,3 +16,4 @@ The challenge is to write a script to play this game. Knowing the rules and all 
 
 Create an algorithm for the AI by EOD Monday - 1 submission per cohort!
 Instructors will test and determine the winner
+
