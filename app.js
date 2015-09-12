@@ -24,7 +24,7 @@ function play(){
   compare(playerNum, computerNum);
   updateMoves(previousMoves(playerMovesLeft), playerMovesLeft, playerNum);
   updateMoves(previousMoves(computerMovesLeft), computerMovesLeft, computerNum);
-  updateScoreboard(playerNum, computerNum);
+  printScoreboard(playerNum, computerNum);
   if (playerScore >= pointsToWin || computerScore >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
     return;
@@ -186,13 +186,11 @@ function previousMoves(remainingMoves) {
   return go([], 1);
 }
 
-function updateScoreboard(playerNum, computerNum){
-  console.log('Player chose ' + playerNum + "\t\t"
+function printScoreboard(playerNum, computerNum){
+  console.log('Player chose   ' + playerNum + "\t\t"
             + 'Computer chose ' + computerNum);
-  console.log('Player moves so far  ' + previousMoves(playerMovesLeft));
-  console.log('Computer moves so far ' + previousMoves(computerMovesLeft));
-  console.log('player moves left: ' + playerMovesLeft);
-  console.log('computer moves left: ' + computerMovesLeft);
+  console.log('player moves available:   ' + playerMovesLeft);
+  console.log('computer moves available: ' + computerMovesLeft);
   //console.log(weightArray());
 }
 
