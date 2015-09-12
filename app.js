@@ -5,7 +5,7 @@ var playerMoves = [],
     playerPoints = 0,
     computerPoints = 0,
     pointsToWin = 5,
-    
+
     //Algorithm weight modifiers
     computerBoost = 5,
     playerBoost = 2,
@@ -124,11 +124,11 @@ function gameOver(){
 
 function updateScoreboard(playerNum, computerNum){
   console.log('Player chose ' + playerNum);
-  console.log('Player moves so far  ' + playerMoves);
   console.log('Computer chose ' + computerNum);
+  console.log('Player moves so far  ' + playerMoves);
   console.log('Computer moves so far ' + computerMoves);
   console.log('player moves left: ' + playerMovesLeft);
-  console.log('computerMovesLeft: ' + computerMovesLeft);
+  console.log('computer moves left: ' + computerMovesLeft);
 }
 
 var playNow = confirm('Are you ready to play?');
