@@ -87,7 +87,7 @@ function compare(playerNum, computerNum){
 //     }
 //   } else { //offensive
 //     return computerMovesLeft[0];
-//   }   
+//   }
 // }
 
 function computerLogic(){
@@ -101,21 +101,18 @@ function computerLogic(){
     for (var j=0;j<playerMovesLeft.length;j++){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
         playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= numbersLessThanComputerMove : thisMove += computerBoost;
-      } 
+      }
       else if (playerMovesLeft[j] > computerMovesLeft[i]){
         thisMove += numbersMoreThanComputerMove;
       }
     }
-<<<<<<< HEAD
   } else { //offensive
     return computerMovesLeft[0];
   }
-=======
     moveWeights.push(thisMove);
   }
   var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
   return computerMovesLeft[bestMove];
->>>>>>> 3d0c99063ec3fcfd1ff57b91257b76604406ff55
 }
 
 // first part, determine which P(x) where P(x) is probability of x occuring.
@@ -174,17 +171,4 @@ var playNow = confirm('Are you ready to play?');
 if (playNow == true){
   play();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
