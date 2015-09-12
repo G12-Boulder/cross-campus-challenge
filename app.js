@@ -1,3 +1,9 @@
+var isNode=new Function("try {return this===global;}catch(e){return false;}");
+var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
+
+if (isNode) {
+  var readlineSync = require('readline-sync');
+}
 var playerMoves = [],
     computerMoves = [],
     playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
@@ -34,10 +40,12 @@ function updateMoves(moves, movesLeft, chosenNumber){
 }
 
 function chooseANumber(){
-  var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
-
-  if (playerMoves.indexOf(playerNum) > -1){
-    chooseANumber();
+  var playerNum = 0;
+  if (isNode) {
+    playerNum = Number(readlineSync.question("Pick a number that isn't one of the following: " + playerMoves + "\n"));
+  }
+  else if (isBrowser) {
+    playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
   }
   if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
     console.log('Your number is out of range');
@@ -99,7 +107,7 @@ function computerLogic(){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
         playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
       }
-      else if (playerMovesLeft[j] > computerMovesLeft[i]){
+      else if (playerMovesLeft[j] > computerMovesLeft[i]) {
         thisMove += computerGets1;
       }
     }
@@ -173,8 +181,13 @@ function updateScoreboard(playerNum, computerNum){
   console.log('computer moves left: ' + computerMovesLeft);
 }
 
-var playNow = confirm('Are you ready to play?');
-if (playNow == true){
+var playNow = '';
+if (isNode) {
+  playNow = readlineSync.question('Do you want to play?').toLowerCase();
+} else if(isBrowser) {
+  playNow = confirm('Do you want to play?').toLowerCase();
+}
+if (playNow == 'yes'){
   play();
 }
 
