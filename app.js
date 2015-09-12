@@ -173,10 +173,12 @@ function gameOver(){
   computerScore = 0;
 }
 
-function previousMoves(prevMovesArray) {
+function previousMoves(remainingMoves) {
+  // given an array of the remaining moves,
+  // returns an array of the moves that have already been made
   function go(movesCollection, counter) {
     if (counter == 11) { return movesCollection; }
-    if (prevMovesArray.indexOf(counter) == - 1) {
+    if (remainingMoves.indexOf(counter) == - 1) {
       movesCollection.push(counter);
     }
     return go(movesCollection, ++counter);
