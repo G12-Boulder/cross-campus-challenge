@@ -1,7 +1,7 @@
-var isNode=new Function("try {return this===global;}catch(e){return false;}");
-var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
+var isNode = new Function("try {return this===global;}catch(e){return false;}");
+var isBrowser = new Function("try {return this===window;}catch(e){return false;}");
 
-if (isNode) {
+if (isNode()) {
   var readlineSync = require('readline-sync');
 }
 var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
@@ -40,17 +40,18 @@ function updateMoves(moves, movesLeft, chosenNumber){
 function chooseANumber(){
   var playerNum = 0;
   while(playerMovesLeft.indexOf(playerNum) == -1)  {
-    if (isNode) {
-      playerNum = Number(readlineSync
-          .question("Pick a number that isn't one of the following: "
+    if (isNode()) {
+      playerNum = Number(readlineSync.question("Pick a number that isn't one of the following: "
           + previousMoves(playerMovesLeft) + "\n"
           + "Your current score is "
           + playerScore + "\n"
           + "The computer's current score is"
           + computerScore + "\n"));
     }
-    else if (isBrowser) {
+    else if (isBrowser()) {
       playerNum = Number(prompt('Pick a number, bitch\n'
+            + 'other than'
+            + previousMoves(playerMovesLeft) + "\n"
             + 'Your current score is '
             + playerScore
             + '\nThe computer\'s current score is '
@@ -195,12 +196,12 @@ function printScoreboard(playerNum, computerNum){
 }
 
 var playNow = '';
-if (isNode) {
-  playNow = readlineSync.question('Do you want to play?').toLowerCase();
-} else if(isBrowser) {
-  playNow = confirm('Do you want to play?').toLowerCase();
+if (isNode()) {
+  playNow = readlineSync.question('play?').toLowerCase();
+} else if(isBrowser()) {
+  playNow = confirm('Do you want to play?');
 }
-if (playNow == 'yes'){
+if (playNow != 'no' || playNow){
   play();
 }
 
