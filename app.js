@@ -107,11 +107,9 @@ function computerLogic(){
     }
     for (var j=0;j<playerMovesLeft.length;j++){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
-        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= numbersLessThanComputerMove : thisMove += computerBoost;
-      }
         playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
       }
-      else if (playerMovesLeft[j] > computerMovesLeft[i]){
+      else if (playerMovesLeft[j] > computerMovesLeft[i]) {
         thisMove += computerGets1;
       }
     }
