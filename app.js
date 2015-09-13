@@ -76,35 +76,22 @@ function compare(playerNum, computerNum){
   }
 }
 
-// function computerLogic(){
-//   if (computerMoves.length === 0){
-//     return 10;
-//   };
-//   if (playerScore - computerScore < 2){ //defensive strategy
-//     if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
-//       return playerMoves[playerMoves.length - 1] - 1;
-//     } else {
-//       return computerMovesLeft[computerMovesLeft.length - 1];
-//     }
-//   } else { //offensive
-//     return computerMovesLeft[0];
-//   }
-// }
 
 function computerLogic(){
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
+  var randMax = (myLateWeightArray.length > 1) ? 3 : 0;
   if (computerMovesLeft.length == 10) {
-    return [6,7,8][randomOf()] // aka, 6 7 or 8 randomly
+    return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
   }
   else if (playerMovesLeft.length > 7) {
-    return myLateWeightArray[0].numberInComputerHand;
+    return myLateWeightArray[randomOf(randMax)].numberInComputerHand;
   }
   else {
-    return myEarlyWeightArray[0].numberInComputerHand;
+    return myEarlyWeightArray[randomOf(randMax)].numberInComputerHand;
   }
-  function randomOf() {
-    return Math.floor(Math.random()*3);  // choose between 0 and 2
+  function randomOf(max) {
+    return Math.floor(Math.random()*max);  // choose between 0 and 2
   }
 }
 
@@ -135,9 +122,6 @@ function weightArray () {
     };
   })
 }
-
-//console.log("***TESTING*** Weight Array Changes with each turn?");
-//console.log(weightArray());
 
 function makeRatio(opponentArray, number, comparisonFn) {
   // returns the percentage of the numbers lower than the numbers
