@@ -19,10 +19,9 @@ var server = http.createServer(function (req, res) {
   var jsonResponse = {};
   res.writeHead(200, {'Content-Type':'application/json'});
     if (urlKeys.pathname == '/api/gamestate') {
-      console.log(urlKeys);
       if (urlKeys.query.move != null) {
         jsonResponse.move = urlKeys.query.move;
-        play(urlKeys.query);
+
       }
       jsonResponse.playerHand = playerMovesLeft;
       jsonResponse.computerHand = computerMovesLeft;
@@ -45,3 +44,38 @@ var server = http.createServer(function (req, res) {
 
 server.listen(Number(process.argv[2]));
 
+
+var gameState = {
+  playerHand:  [1,2,3,4,5,6,7,8,9,10],
+  computerHand:  [1,2,3,4,5,6,7,8,9,10],
+  playerScore:  0,
+  computerScore:  0,
+  playerChoice:  -1,
+  computerChoice:  -1
+}
+
+function play( currentState ) {
+  if (currentState.courrentPlayerChoice > 0) {
+    compare(currentState)
+  }
+}
+
+
+function updatePlayerChoice (stateObject, choice)  {
+  stateObject.playerNum = choice;
+}
+
+// side effects onto currentState
+function compare(currentState) {
+
+  (currentState.playerChoice > currentState.computerChoice)
+
+  if (getTwo(currentState.playerChoice, currentState.computerChoice)) {
+    currentState.playerScore += 2;
+  }
+
+  function getTwo( a, b ) {
+    return (a - b == 1) ? a : b;
+  }
+  return currentState;
+}

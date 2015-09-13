@@ -21,6 +21,7 @@ function play(){
     gameOver();
   }
   play();
+
 }
 
 function updateMoves(movesLeft, chosenNumber){
@@ -58,7 +59,7 @@ function compare(playerNum, computerNum){
     playerScore += 2;
     console.log('Player received 2 points.  Total points: ' + playerScore);
   }
-  else if (computerNum - playerNum == 1){
+  else if (playerNum - computerNum == -1){
     computerScore += 2;
     console.log('Computer received 2 points. Total points: ' + computerScore);
   }
@@ -152,6 +153,13 @@ function gameOver(){
   }
   playerScore = 0;
   computerScore = 0;
+  playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+  computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+  pointsToWin = 5
+
+
+
+
 }
 
 function previousMoves(remainingMoves) {
