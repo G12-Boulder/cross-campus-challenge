@@ -11,10 +11,10 @@ var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     pointsToWin = 5,
 
     //Algorithm weight modifiers
-    computerGets2 = 5,
+    computerGets2 = 2,
     playerGets2 = 2,
     playerGets1 = 1,
-    computerGets1 = 0;
+    computerGets1 = 1;
 
 
 function play(){
