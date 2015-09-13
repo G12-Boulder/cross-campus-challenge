@@ -8,11 +8,18 @@ var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     playerScore = 0,
     computerScore = 0,
-    pointsToWin = 5
+    pointsToWin = 5,
+
+    //Algorithm weight modifiers
+    computerGets2 = 5,
+    playerGets2 = 2,
+    playerGets1 = 1,
+    computerGets1 = 0;
+
 
 function play(){
-  var playerNum = chooseANumber();
-  var computerNum = computerLogic();
+  var playerNum = brettsComputerLogic();
+  var computerNum = andrewsComputerLogic();
   compare(playerNum, computerNum);
   updateMoves(playerMovesLeft, playerNum);
   updateMoves(computerMovesLeft, computerNum);
@@ -91,20 +98,45 @@ function compare(playerNum, computerNum){
 //   }
 // }
 
-function computerLogic(){
+function andrewsComputerLogic(){
+  var moveWeights = [];
+  for (var i=0;i<computerMovesLeft.length;i++){
+    var thisMove = 0;
+    if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
+      thisMove -= playerGets2;
+    }
+    for (var j=0;j<playerMovesLeft.length;j++){
+      if (playerMovesLeft[j] < computerMovesLeft[i]){
+        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
+      }
+      else if (playerMovesLeft[j] > computerMovesLeft[i]){
+        thisMove += computerGets1;
+      }
+    }
+    moveWeights.push(thisMove);
+  }
+  var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
+  return computerMovesLeft[bestMove];
+}
+
+
+
+function brettsComputerLogic(){
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
-  if (computerMovesLeft.length == 10) {
+  if (playerMovesLeft.length == 10) {
     return [6,7,8][randomOf()] // aka, 6 7 or 8 randomly
   }
-  if (computerMovesLeft.length > 7) {
-    return myLateWeightArray[randomOf()].numberInComputerHand;
+  else if (playerMovesLeft.length > 7) {
+    console.log(myLateWeightArray[0]);
+    return myLateWeightArray[0].numberInComputerHand;
   }
   else {
-    return myEarlyWeightArray[randomOf()].numberInComputerHand;
+    console.log(myEarlyWeightArray[0])
+    return myEarlyWeightArray[0].numberInComputerHand;
   }
   function randomOf() {
-    return Math.round(Math.random()*3);  // choose between 1 - 3
+    return Math.round(Math.random());  // choose between 0 and 1
   }
 }
 
@@ -127,11 +159,11 @@ function sortWeightArray(arr, prop) {
 }
 
 function weightArray () {
-  return computerMovesLeft.map(function(element) {
+  return playerMovesLeft.map(function(element) {
     return {
       numberInComputerHand : element,
-      ltRatio: makeRatio(playerMovesLeft, element, isGt),
-      gtRatio: makeRatio(playerMovesLeft, element, isLt)
+      ltRatio: makeRatio(computerMovesLeft, element, isGt),
+      gtRatio: makeRatio(computerMovesLeft, element, isLt)
     };
   })
 }
@@ -185,10 +217,10 @@ function previousMoves(remainingMoves) {
 }
 
 function printScoreboard(playerNum, computerNum){
-  console.log('Player chose   ' + playerNum + "\t\t"
-            + 'Computer chose ' + computerNum);
-  console.log('Availalbe player moves:   ' + playerMovesLeft);
-  console.log('Available computer moves: ' + computerMovesLeft);
+  console.log('BrettsAI chose   ' + playerNum + "\t\t"
+            + 'AndrewsAI chose ' + computerNum);
+  console.log('Availalbe AI 1 moves:   ' + playerMovesLeft);
+  console.log('Available AI 2 moves: ' + computerMovesLeft);
   //console.log(weightArray());
 }
 
