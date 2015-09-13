@@ -129,7 +129,7 @@ function sortWeightArray(arr, prop) {
 function weightArray () {
   return computerMovesLeft.map(function(element) {
     return {
-      numberInComputerHand : element,
+      numberInComputerHand: element,
       ltRatio: makeRatio(playerMovesLeft, element, isGt),
       gtRatio: makeRatio(playerMovesLeft, element, isLt)
     };
@@ -176,7 +176,7 @@ function previousMoves(remainingMoves) {
   // returns an array of the moves that have already been made
   function go(movesCollection, counter) {
     if (counter == 11) { return movesCollection; }
-    if (remainingMoves.indexOf(counter) == - 1) {
+    if (remainingMoves.indexOf(counter) == -1) {
       movesCollection.push(counter);
     }
     return go(movesCollection, ++counter);
