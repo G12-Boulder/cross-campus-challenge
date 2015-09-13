@@ -39,10 +39,7 @@ function updateMoves(movesSoFar, movesLeft, chosenNumber){
 function chooseANumber(){
   var playerNum = Number(prompt('Pick a number, puny human\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
 
-  if (playerMoves.indexOf(playerNum) > -1){
-    chooseANumber();
-  }
-  if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
+  if (playerMovesLeft.indexOf(playerNum) == -1) {
     console.log('Your number is out of range');
     chooseANumber();
   } else {
