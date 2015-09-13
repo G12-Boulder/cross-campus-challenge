@@ -1,6 +1,4 @@
-var playerMoves = [],
-    computerMoves = [],
-    playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     playerPoints = 0,
     computerPoints = 0,
@@ -16,14 +14,26 @@ var playerMoves = [],
     playerGets1 = 1,
     computerGets1 = 0;
 
+function previousMoves(remainingMoves) {
+  // given an array of the remaining moves,
+  // returns an array of the moves that have already been made
+  function go(movesCollection, counter) {
+    if (counter == 11) { return movesCollection; }
+    if (remainingMoves.indexOf(counter) == -1) {
+      movesCollection.push(counter);
+    }
+    return go(movesCollection, ++counter);
+  }
+  return go([], 1);
+}
 
 
 function play(){
   var playerNum = chooseANumber();
   var computerNum = computerLogic();
   compare(playerNum, computerNum);
-  updateMoves(playerMoves, playerMovesLeft, playerNum);
-  updateMoves(computerMoves, computerMovesLeft, computerNum);
+  updateMoves(playerMovesLeft, playerNum);
+  updateMoves(computerMovesLeft, computerNum);
   updateScoreboard(playerNum, computerNum);
   if (playerPoints >= pointsToWin || computerPoints >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
@@ -32,7 +42,6 @@ function play(){
 }
 
 function updateMoves(movesSoFar, movesLeft, chosenNumber){
-  movesSoFar.push(chosenNumber);
   movesLeft.splice(movesLeft.indexOf(chosenNumber), 1);
 }
 
@@ -76,7 +85,6 @@ function compare(playerNum, computerNum){
 }
 
 function computerLogic(){
-  console.log(weightArray());
   var moveWeights = [];
   for (var i=0;i<computerMovesLeft.length;i++){
     var thisMove = 0;
@@ -179,8 +187,8 @@ function gameOver(){
 function updateScoreboard(playerNum, computerNum){
   console.log('Player chose ' + playerNum);
   console.log('Computer chose ' + computerNum);
-  console.log('Player moves so far  ' + playerMoves);
-  console.log('Computer moves so far ' + computerMoves);
+  console.log('Player moves so far  ' + previousMoves(playerMovesLeft));
+  console.log('Computer moves so far ' + previousMoves(computerMovesLeft));
   console.log('player moves left: ' + playerMovesLeft);
   console.log('computer moves left: ' + computerMovesLeft);
 }
