@@ -37,7 +37,7 @@ function updateMoves(movesSoFar, movesLeft, chosenNumber){
 }
 
 function chooseANumber(){
-  var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
+  var playerNum = Number(prompt('Pick a number, puny human\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
 
   if (playerMoves.indexOf(playerNum) > -1){
     chooseANumber();
@@ -50,8 +50,6 @@ function chooseANumber(){
   }
 }
 
-<<<<<<< HEAD
-=======
 
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
@@ -76,22 +74,6 @@ function compare(playerNum, computerNum){
   }
 
 }
-
->>>>>>> 56ea9426e49c9eab6a80b3c683333e77f2fb7d0e
-// function computerLogic(){
-//   if (computerMoves.length === 0){
-//     return 10;
-//   };
-//   if (playerPoints - computerPoints < 2){ //defensive strategy
-//     if (computerMovesLeft.indexOf(playerMoves[playerMoves.length - 1] - 1) > -1){
-//       return playerMoves[playerMoves.length - 1] - 1;
-//     } else {
-//       return computerMovesLeft[computerMovesLeft.length - 1];
-//     }
-//   } else { //offensive
-//     return computerMovesLeft[0];
-//   }
-// }
 
 function computerLogic(){
   console.log(weightArray());
@@ -115,7 +97,6 @@ function computerLogic(){
   return computerMovesLeft[bestMove];
 }
 
-<<<<<<< HEAD
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
   if (playerNum - computerNum == 1){
@@ -136,9 +117,9 @@ function compare(playerNum, computerNum){
   }
   else {
     console.log('It\'s a tie');
-  } 
+  }
 }
-=======
+
 // Sooooo here's some spec:
 // the data-structure I've built my functions to return and work with
 // is an Object, with 3 fields guaranteed (and others can be added or not)
@@ -146,6 +127,8 @@ function compare(playerNum, computerNum){
 //   gtRatio: (double between 0 and 1) }
 //   where ltRatio is . . .(quantOfOpponentsHandGreaterThanNumber/opponentsHand.length)
 //   and gtRatio is . . .(quantOfOpponentsHandLessThanNumber/opponentsHand.length)
+// anyone else working on the ai algo can use this someone
+// might have use for it that I do not yet realize.
 
 function weightArray () {
   return computerMovesLeft.map(function(element) {
@@ -177,9 +160,6 @@ function isLt(a, b) { // pronounced a is Less than b
 function isGt(a, b) {
   return (a > b);
 }
-
-
->>>>>>> 56ea9426e49c9eab6a80b3c683333e77f2fb7d0e
 
 function gameOver(){
   if (playerPoints >= pointsToWin){
