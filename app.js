@@ -128,15 +128,13 @@ function brettsComputerLogic(){
     return [6,7,8][randomOf()] // aka, 6 7 or 8 randomly
   }
   else if (playerMovesLeft.length > 7) {
-    console.log(myLateWeightArray[0]);
     return myLateWeightArray[0].numberInComputerHand;
   }
   else {
-    console.log(myEarlyWeightArray[0])
     return myEarlyWeightArray[0].numberInComputerHand;
   }
   function randomOf() {
-    return Math.round(Math.random());  // choose between 0 and 1
+    return Math.floor(Math.random()*3);  // choose between 0 and 2
   }
 }
 
