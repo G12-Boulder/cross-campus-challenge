@@ -40,7 +40,7 @@ function chooseANumber(){
           + computerScore + "\n"));
     }
     else if (isBrowser) {
-      playerNum = Number(prompt('Pick a number, bitch\n'
+      playerNum = Number(prompt('Pick a number, human\n'
             + 'other than'
             + previousMoves(playerMovesLeft) + "\n"
             + 'Your current score is '
