@@ -1,9 +1,6 @@
 var isNode = new Function("try {return this===global;}catch(e){return false;}")();
 var isBrowser = new Function("try {return this===window;}catch(e){return false;}")();
 
-console.log(isNode);
-console.log(isBrowser);
-
 if (isNode) {
   var readlineSync = require('readline-sync');
 }
