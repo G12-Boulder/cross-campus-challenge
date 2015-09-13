@@ -22,8 +22,8 @@ function play(){
   var playerNum = chooseANumber();
   var computerNum = computerLogic();
   compare(playerNum, computerNum);
-  updateMoves(previousMoves(playerMovesLeft), playerMovesLeft, playerNum);
-  updateMoves(previousMoves(computerMovesLeft), computerMovesLeft, computerNum);
+  updateMoves(playerMovesLeft, playerNum);
+  updateMoves(computerMovesLeft, computerNum);
   printScoreboard(playerNum, computerNum);
   if (playerScore >= pointsToWin || computerScore >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
@@ -32,8 +32,7 @@ function play(){
   play();
 }
 
-function updateMoves(moves, movesLeft, chosenNumber){
-  moves.push(chosenNumber);
+function updateMoves(movesLeft, chosenNumber){
   movesLeft.splice(movesLeft.indexOf(chosenNumber), 1);
 }
 
@@ -45,7 +44,7 @@ function chooseANumber(){
           + previousMoves(playerMovesLeft) + "\n"
           + "Your current score is "
           + playerScore + "\n"
-          + "The computer's current score is"
+          + "The computer's current score is "
           + computerScore + "\n"));
     }
     else if (isBrowser) {
@@ -101,24 +100,10 @@ function compare(playerNum, computerNum){
 // }
 
 function computerLogic(){
-  var moveWeights = [];
-  for (var i=0;i<computerMovesLeft.length;i++){
-    var thisMove = 0;
-    if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
-      thisMove -= playerGets2;
-    }
-    for (var j=0;j<playerMovesLeft.length;j++){
-      if (playerMovesLeft[j] < computerMovesLeft[i]){
-        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
-      }
-      else if (playerMovesLeft[j] > computerMovesLeft[i]) {
-        thisMove += computerGets1;
-      }
-    }
-    moveWeights.push(thisMove);
-  }
-  var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
-  return computerMovesLeft[bestMove];
+  myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
+  myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
+
+  return cpuMove;
 }
 
 // Sooooo here's some spec:
@@ -128,6 +113,13 @@ function computerLogic(){
 //   gtRatio: (double between 0 and 1) }
 //   where ltRatio is . . .(quantOfOpponentsHandGreaterThanNumber/opponentsHand.length)
 //   and gtRatio is . . .(quantOfOpponentsHandLessThanNumber/opponentsHand.length)
+
+function sortWeightArray(arr, prop) {
+  //usage example sortWeightArray(weightArray(), ltRatio)
+  return arr.sort(function (a,b) {
+    return a[prop] - b[prop];
+  })
+}
 
 function weightArray () {
   return computerMovesLeft.map(function(element) {
@@ -190,8 +182,8 @@ function previousMoves(remainingMoves) {
 function printScoreboard(playerNum, computerNum){
   console.log('Player chose   ' + playerNum + "\t\t"
             + 'Computer chose ' + computerNum);
-  console.log('player moves available:   ' + playerMovesLeft);
-  console.log('computer moves available: ' + computerMovesLeft);
+  console.log('Availalbe player moves:   ' + playerMovesLeft);
+  console.log('Available computer moves: ' + computerMovesLeft);
   //console.log(weightArray());
 }
 
