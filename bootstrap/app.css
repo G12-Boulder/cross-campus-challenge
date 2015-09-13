@@ -1,0 +1,118 @@
+body {
+  padding:0;
+  margin:0;
+  font-size: 25px;
+  font-family: "Neuton";
+  font-weight: bold;
+}
+
+h1, h2, h3, th {
+  text-align: center;
+}
+li {
+  font-size: 35px;
+  text-shadow: 1px 1px 1px #fff;
+
+}
+
+/*h3 {
+  font-size: 60px;
+}*/
+
+
+#scoreboard {
+  background-color:#333;
+  width:100%;
+  padding: 20px;
+  color:#FFF;
+
+}
+
+#scoreboard h1{
+  float: left;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0px;
+}
+
+.row {
+  margin-top: 50px;
+}
+
+.thumbnail {
+  margin-left: 6px;
+  text-align: center;
+}
+
+.hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.clicked {
+  background-color: #333;
+  color: #fff; 
+}
+
+.mask {
+  background-color: #bce8f1;
+  opacity: .8;
+  position: fixed;
+  top:0;
+  left:0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
+}
+
+.restart {
+  padding: 30px;
+  background-color: #000;
+  border: solid 1px #333;
+  border-radius: 15px;
+}
+
+
+.restart h3 {
+  color: #fff;
+  text-shadow: 2px 2px 1px #fff;
+  font-size: 70px;
+  font-family: bold;
+}
+
+.restart .question {
+  color: #fff;
+  text-shadow: 1px 1px 1px #fff;
+  font-size: 40px;
+  font-family: bold;
+}
+
+.restart a {
+  display: inline;
+  color: #de6f1b;
+  font-size: 30px;
+  font-family: bold;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+.comp-icon {
+  font-size: 60px;
+}
+
+.label-info {
+  margin-left: 20px;
+  padding: 15px;
+  padding-right: 40px;
+  text-shadow: 1px 1px 1px #333;
+}
+
+
+
+
