@@ -8,15 +8,7 @@ var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     playerScore = 0,
     computerScore = 0,
-    pointsToWin = 5,
-
-    //Algorithm weight modifiers
-    computerGets2 = 5,
-    playerGets2 = 2,
-    playerGets1 = 1,
-    computerGets1 = 0;
-
-
+    pointsToWin = 5
 
 function play(){
   var playerNum = chooseANumber();
@@ -100,10 +92,20 @@ function compare(playerNum, computerNum){
 // }
 
 function computerLogic(){
-  myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
-  myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
-
-  return cpuMove;
+  var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
+  var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
+  if (computerMovesLeft.length == 10) {
+    return 6;
+  }
+  if (computerMovesLeft.length > 7) {
+    return myLateWeightArray[randomOfTwo()].numberInComputerHand;
+  }
+  else {
+    return myEarlyWeightArray[randomOfTwo()].numberInComputerHand;
+  }
+  function randomOfTwo() {
+    return Math.round(Math.random());  // to simplify
+  }
 }
 
 // Sooooo here's some spec:
@@ -117,6 +119,9 @@ function computerLogic(){
 function sortWeightArray(arr, prop) {
   //usage example sortWeightArray(weightArray(), ltRatio)
   return arr.sort(function (a,b) {
+
+    // I may include secondary sorting, so if prop = ltRatio, and
+    // a[prop] - b[prop] are ==, sort by a[otherprop] - b[otherprop]
     return a[prop] - b[prop];
   })
 }
