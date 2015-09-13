@@ -38,6 +38,10 @@ function updateMoves(movesSoFar, movesLeft, chosenNumber){
 
 function chooseANumber(){
   var playerNum = Number(prompt('Pick a number, bitch\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
+
+  if (playerMoves.indexOf(playerNum) > -1){
+    chooseANumber();
+  }
   if (playerNum > 10 || playerNum < 1 || !playerNum || playerMoves.indexOf(playerNum) > -1 || playerNum == undefined) {
     console.log('Your number is out of range');
     chooseANumber();
@@ -46,6 +50,34 @@ function chooseANumber(){
   }
 }
 
+<<<<<<< HEAD
+=======
+
+function compare(playerNum, computerNum){
+  console.log('-------------------------------------------------------')
+  if (playerNum - computerNum == 1){
+    playerPoints += 2;
+    console.log('Player received 2 points.  Total points: ' + playerPoints);
+  }
+  else if (computerNum - playerNum == 1){
+    computerPoints += 2;
+    console.log('Computer received 2 points. Total points: ' + computerPoints);
+  }
+  else if (playerNum < computerNum){
+    playerPoints++;
+    console.log('Player received 1 point.  Total points: ' + playerPoints);
+  }
+  else if (computerNum < playerNum){
+    computerPoints++;
+    console.log('Computer received 1 point. Total points: ' + computerPoints);
+  }
+  else {
+    console.log('It\'s a tie');
+  }
+
+}
+
+>>>>>>> 56ea9426e49c9eab6a80b3c683333e77f2fb7d0e
 // function computerLogic(){
 //   if (computerMoves.length === 0){
 //     return 10;
@@ -58,10 +90,11 @@ function chooseANumber(){
 //     }
 //   } else { //offensive
 //     return computerMovesLeft[0];
-//   }   
+//   }
 // }
 
 function computerLogic(){
+  console.log(weightArray());
   var moveWeights = [];
   for (var i=0;i<computerMovesLeft.length;i++){
     var thisMove = 0;
@@ -71,7 +104,7 @@ function computerLogic(){
     for (var j=0;j<playerMovesLeft.length;j++){
       if (playerMovesLeft[j] < computerMovesLeft[i]){
         playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
-      } 
+      }
       else if (playerMovesLeft[j] > computerMovesLeft[i]){
         thisMove += computerGets1;
       }
@@ -82,6 +115,7 @@ function computerLogic(){
   return computerMovesLeft[bestMove];
 }
 
+<<<<<<< HEAD
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
   if (playerNum - computerNum == 1){
@@ -104,6 +138,48 @@ function compare(playerNum, computerNum){
     console.log('It\'s a tie');
   } 
 }
+=======
+// Sooooo here's some spec:
+// the data-structure I've built my functions to return and work with
+// is an Object, with 3 fields guaranteed (and others can be added or not)
+// { number: numberInHand, ltRatio: (double between 0 and 1),
+//   gtRatio: (double between 0 and 1) }
+//   where ltRatio is . . .(quantOfOpponentsHandGreaterThanNumber/opponentsHand.length)
+//   and gtRatio is . . .(quantOfOpponentsHandLessThanNumber/opponentsHand.length)
+
+function weightArray () {
+  return computerMovesLeft.map(function(element) {
+    return {
+      numberInComputerHand : element,
+      ltRatio: makeRatio(playerMovesLeft, element, isGt),
+      gtRatio: makeRatio(playerMovesLeft, element, isLt)
+    };
+  })
+}
+
+//console.log("***TESTING*** Weight Array Changes with each turn?");
+//console.log(weightArray());
+
+function makeRatio(opponentArray, number, comparisonFn) {
+  // returns the percentage of the numbers lower than the numbers
+  // in the oppponentArray as a ratio. comparisonFn is either isLt or isGt.
+  function go(array, num, ratioNumer) {
+    if (array.length == 0) { return (ratioNumer / opponentArray.length); }
+
+    if (comparisonFn(array[0], num)) { ratioNumer += 1; }
+    return go(array.slice(1), num, ratioNumer)
+  }
+  return go(opponentArray, number, 0);
+}
+function isLt(a, b) { // pronounced a is Less than b
+  return (a < b);
+}
+function isGt(a, b) {
+  return (a > b);
+}
+
+
+>>>>>>> 56ea9426e49c9eab6a80b3c683333e77f2fb7d0e
 
 function gameOver(){
   if (playerPoints >= pointsToWin){
@@ -133,17 +209,4 @@ var playNow = confirm('Are you ready to play?');
 if (playNow == true){
   play();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
