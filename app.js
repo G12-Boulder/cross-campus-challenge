@@ -77,7 +77,7 @@ function compare(playerNum, computerNum){
 }
 
 
-function computerLogic(){
+function computerChoice() {
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
   var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
