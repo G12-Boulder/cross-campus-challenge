@@ -19,7 +19,6 @@ function play(){
   printScoreboard(playerNum, computerNum);
   if (playerScore >= pointsToWin || computerScore >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
-    return;
   }
   play();
 }
@@ -28,7 +27,7 @@ function updateMoves(movesLeft, chosenNumber){
   movesLeft.splice(movesLeft.indexOf(chosenNumber), 1);
 }
 
-function chooseANumber(){
+function chooseANumber() {
   var playerNum = 0;
   while(playerMovesLeft.indexOf(playerNum) == -1)  {
     if (isNode()) {
@@ -80,7 +79,7 @@ function compare(playerNum, computerNum){
 function computerLogic(){
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
-  var randMax = (myLateWeightArray.length > 1) ? 3 : 0;
+  var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
   if (computerMovesLeft.length == 10) {
     return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
   }
