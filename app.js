@@ -95,16 +95,16 @@ function computerLogic(){
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
   if (computerMovesLeft.length == 10) {
-    return 6;
+    return [6,7,8][randomOf()] // aka, 6 7 or 8 randomly
   }
   if (computerMovesLeft.length > 7) {
-    return myLateWeightArray[randomOfTwo()].numberInComputerHand;
+    return myLateWeightArray[randomOf()].numberInComputerHand;
   }
   else {
-    return myEarlyWeightArray[randomOfTwo()].numberInComputerHand;
+    return myEarlyWeightArray[randomOf()].numberInComputerHand;
   }
-  function randomOfTwo() {
-    return Math.round(Math.random());  // to simplify
+  function randomOf() {
+    return Math.round(Math.random()*3);  // choose between 1 - 3
   }
 }
 
