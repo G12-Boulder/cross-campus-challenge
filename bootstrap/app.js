@@ -2,8 +2,6 @@ $(function() {
 
 $(".mask").hide();
 $(".update").hide();
-$(".scoreboard").hide();
-
 
 var playerMoves = [],
     computerMoves = [],
@@ -35,9 +33,7 @@ var smacks = {
     "You think you're better than me?!",
     "I hope a bear eats your face and genitals; genitals first",
     "rm -rf your-balls",
-    "mkdir I_HATE_U",
-    "touch watch_out_for_player_1"
-  ]
+    "mkdir I_HATE_U"  ]
 }
 
 $(".user-selection").on("click", function() {
@@ -46,9 +42,8 @@ $(".user-selection").on("click", function() {
   $(this).addClass("clicked");
  
   var playerNum = $(this).data("user");
-
   var computerNum = computerLogic();
-
+  var previousCompPoints = computerPoints;
   var $computerSelection = $("[data-comp=" + computerNum + "]");
   
   $computerSelection.addClass("clicked");
@@ -65,8 +60,9 @@ $(".user-selection").on("click", function() {
     gameOver();
     return;
   }
+  var computerWin = computerPoints > previousCompPoints;
   $('.comp-icon').qtip({
-    content: smackTalk(),
+    content: smackTalk(computerWin),
     show: {
         effect: function() {
             $(this).fadeTo(500, 1);
@@ -106,22 +102,22 @@ function compare(playerNum, computerNum){
 
   if (playerNum - computerNum == 1){
     playerPoints += 2;
-    $(".update").append('</h3>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 2 points.</h3><br>');
+    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 2 points.</h2><br>');
   }
   else if (computerNum - playerNum == 1){
     computerPoints += 2;
-    $(".update").append('</h3>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 2 points.</h3><br>');
+    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 2 points.</h2><br>');
   }
   else if (playerNum < computerNum){
     playerPoints++;
-    $(".update").append('</h3>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 1 point.</h3><br>');
+    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 1 point.</h2><br>');
   }
   else if (computerNum < playerNum){
     computerPoints++;
-    $(".update").append('</h3>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 1 point.</h3><br>');
+    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 1 point.</h2><br>');
   }
   else {
-    $(".update").append('</h3>It\'s a tie; no points awarded</h3><br>');
+    $(".update").append('</h2>It\'s a tie; no points awarded</h3><br>');
   }
   
 }

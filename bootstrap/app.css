@@ -9,16 +9,11 @@ body {
 h1, h2, h3, th {
   text-align: center;
 }
+
 li {
   font-size: 35px;
   text-shadow: 1px 1px 1px #fff;
-
 }
-
-/*h3 {
-  font-size: 60px;
-}*/
-
 
 #scoreboard {
   background-color:#333;
