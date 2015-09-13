@@ -197,6 +197,7 @@ if (isNode) {
   playNow = readlineSync.question('play?').toLowerCase();
 } else if(isBrowser) {
   playNow = confirm('Do you want to play?');
+  play();
 }
 if (playNow != 'no' || playNow){
   play();
