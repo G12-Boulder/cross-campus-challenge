@@ -55,3 +55,16 @@ function isGt(a, b) {
   return (a > b);
 }
 
+
+
+function GameState() {
+  return {
+    myObject: "My object prop",
+    theOtherObj: "The other object"
+  }
+}
+
+myGS = GameState();
+console.log(myGS);
+
+

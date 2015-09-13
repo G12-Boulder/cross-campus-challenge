@@ -13,7 +13,7 @@ var url = require('url');
 var server = http.createServer(function (req, res) {
   if(req.method != 'GET') {
     res.end("Send me a GET request please.  If you would like to make a move "
-        + "please include a query string in the form /api/gamestate?move = #");
+        + "please include a query string in the form /api/gamestate?move=#");
   }
   var urlKeys = url.parse(req.url, true);
   var jsonResponse = {};
@@ -21,7 +21,7 @@ var server = http.createServer(function (req, res) {
     if (urlKeys.pathname == '/api/gamestate') {
       if (urlKeys.query.move != null) {
         jsonResponse.move = urlKeys.query.move;
-
+        play(currentState);
       }
       jsonResponse.playerHand = playerMovesLeft;
       jsonResponse.computerHand = computerMovesLeft;
@@ -45,7 +45,7 @@ var server = http.createServer(function (req, res) {
 server.listen(Number(process.argv[2]));
 
 
-var gameState = {
+function GameState() = return {
   playerHand:  [1,2,3,4,5,6,7,8,9,10],
   computerHand:  [1,2,3,4,5,6,7,8,9,10],
   playerScore:  0,
@@ -54,28 +54,53 @@ var gameState = {
   computerChoice:  -1
 }
 
-function play( currentState ) {
-  if (currentState.courrentPlayerChoice > 0) {
-    compare(currentState)
+function play(currentState) {
+  if (currentState.playerChoice > 0) {
+    scoreRound(currentState);
+    updateHand(currentState);
   }
+
+
+  return currentState;
 }
 
-
-function updatePlayerChoice (stateObject, choice)  {
+// side effects into stateObject
+function updatePlayerChoice (currentState, choice)  {
   stateObject.playerNum = choice;
 }
 
 // side effects onto currentState
-function compare(currentState) {
-
-  (currentState.playerChoice > currentState.computerChoice)
-
-  if (getTwo(currentState.playerChoice, currentState.computerChoice)) {
+function scoreRound(currentState) {
+  if (currentState.playerChoice - currentState.computerChoice == 1) {
     currentState.playerScore += 2;
+    return currentState;
   }
+  else if (currentState.playerChoice - currentState.computerChoice == -1) {
+    currentState.computerScore += 2;
+    return currentState;
+  }
+  else if (currentState.playerChoice > currentState.computerChoice) {
+    currentState.playerScore++;
+    return currentState;
+  }
+  else if (currentState.playerChoice < currentState.computerChoice) {
+    currentState.computerScore++;
+    return currentState;
+  }
+  return currentState;
+} // ty to whoever wrote the logic for this.
 
-  function getTwo( a, b ) {
-    return (a - b == 1) ? a : b;
-  }
+
+function updateHand(currentState) {
+  currentState.playerHand.splice(
+      playerHand.indexOf(currentState.playerChoice), 1);
+
+  currentState.playerChoice = -1;
+
+  currentState.computerHand.splice(
+      computerHand.indexOf(currentState.computerChoice), 1);
+
+  currentState.computerChoice = -1; //bookeeping
+
   return currentState;
 }

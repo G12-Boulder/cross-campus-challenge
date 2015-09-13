@@ -156,10 +156,7 @@ function gameOver(){
   playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
   computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
   pointsToWin = 5
-
-
-
-
+  console.log("Game restarted");
 }
 
 function previousMoves(remainingMoves) {
