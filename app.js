@@ -7,6 +7,10 @@ var playerMoves = [],
     pointsToWin = 5,
 
     //Algorithm weight modifiers
+    // computerGets2  = the importance of trying to get a going for a move that might give the computer 2 points
+    // playerGets2 =  the importance of trying to get prevent the player from getting 2 points
+    // playerGets1 = the importance of preventing the player from getting 1 point
+    // computerGets1 = the importance of trying to get one point
     computerGets2 = 5,
     playerGets2 = 2,
     playerGets1 = 1,
@@ -23,13 +27,12 @@ function play(){
   updateScoreboard(playerNum, computerNum);
   if (playerPoints >= pointsToWin || computerPoints >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
-    return;
   }
   play();
 }
 
-function updateMoves(moves, movesLeft, chosenNumber){
-  moves.push(chosenNumber);
+function updateMoves(movesSoFar, movesLeft, chosenNumber){
+  movesSoFar.push(chosenNumber);
   movesLeft.splice(movesLeft.indexOf(chosenNumber), 1);
 }
 
@@ -41,30 +44,6 @@ function chooseANumber(){
   } else {
     return playerNum;
   }
-}
-
-function compare(playerNum, computerNum){
-  console.log('-------------------------------------------------------')
-  if (playerNum - computerNum == 1){
-    playerPoints += 2;
-    console.log('Player received 2 points.  Total points: ' + playerPoints);
-  }
-  else if (computerNum - playerNum == 1){
-    computerPoints += 2;
-    console.log('Computer received 2 points. Total points: ' + computerPoints);
-  }
-  else if (playerNum < computerNum){
-    playerPoints++;
-    console.log('Player received 1 point.  Total points: ' + playerPoints);
-  }
-  else if (computerNum < playerNum){
-    computerPoints++;
-    console.log('Computer received 1 point. Total points: ' + computerPoints);
-  }
-  else {
-    console.log('It\'s a tie');
-  }
-  
 }
 
 // function computerLogic(){
@@ -103,6 +82,29 @@ function computerLogic(){
   return computerMovesLeft[bestMove];
 }
 
+function compare(playerNum, computerNum){
+  console.log('-------------------------------------------------------')
+  if (playerNum - computerNum == 1){
+    playerPoints += 2;
+    console.log('Player received 2 points.  Total points: ' + playerPoints);
+  }
+  else if (computerNum - playerNum == 1){
+    computerPoints += 2;
+    console.log('Computer received 2 points. Total points: ' + computerPoints);
+  }
+  else if (playerNum < computerNum){
+    playerPoints++;
+    console.log('Player received 1 point.  Total points: ' + playerPoints);
+  }
+  else if (computerNum < playerNum){
+    computerPoints++;
+    console.log('Computer received 1 point. Total points: ' + computerPoints);
+  }
+  else {
+    console.log('It\'s a tie');
+  } 
+}
+
 function gameOver(){
   if (playerPoints >= pointsToWin){
     console.log('Player wins');
@@ -115,6 +117,7 @@ function gameOver(){
   computerMoves = [];
   playerPoints = 0;
   computerPoints = 0;
+  return;
 }
 
 function updateScoreboard(playerNum, computerNum){
