@@ -73,7 +73,6 @@ function compare(playerNum, computerNum){
 }
 
 function computerLogic(){
-  console.log(weightArray());
   var moveWeights = [];
   for (var i=0;i<computerMovesLeft.length;i++){
     var thisMove = 0;
