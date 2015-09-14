@@ -9,7 +9,8 @@
 
 var http = require('http');
 var url = require('url');
-var firstState = new GameState();
+var firstState = resetState({}, '');
+
 var server = http.createServer(function (req, res) {
   if(req.method != 'GET') {
     res.end("Send me a GET request please.  If you would like to make a move "
@@ -21,23 +22,10 @@ var server = http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type':'application/json'});
     if (urlKeys.pathname == '/api/gamestate') {
       if (currentState.playerScore >= 5) {
-        currentState.playerHand = [1,2,3,4,5,6,7,8,9,10];
-        currentState.computerHand = [1,2,3,4,5,6,7,8,9,10];
-        currentState.playerScore = 0;
-        currentState.computerScore = 0;
-        currentState.playerChoice = -1;
-        currentState.computerChoice = -1;
-        currentState.lastWinner = 'Player';
+        resetState(currentState, "Player");
       }
       if (currentState.computerScore >= 5) {
-        currentState.playerHand = [1,2,3,4,5,6,7,8,9,10];
-        currentState.computerHand = [1,2,3,4,5,6,7,8,9,10];
-        currentState.playerScore = 0;
-        currentState.computerScore = 0;
-        currentState.playerChoice = -1;
-        currentState.computerChoice = -1;
-        currentState.lastWinner = 'Player';
-        currentState.lastWinner = "Computer";
+        resetState(currentState, "Computer");
       }
       if (urlKeys.query.move != null) {
         currentState.playerChoice = urlKeys.query.move;
@@ -64,17 +52,15 @@ var server = http.createServer(function (req, res) {
 
 server.listen(Number(process.argv[2]));
 
-function GameState() {  // GameState is the TYPE that all functions operate on
-  return {
-    playerHand:  [1,2,3,4,5,6,7,8,9,10],
-    computerHand:  [1,2,3,4,5,6,7,8,9,10],
-    playerScore:  0,
-    computerScore:  0,
-    playerChoice:  -1,
-    computerChoice:  -1,
-    lastWinner: ''
-  };
-  // it either returns a fresh game state, or any current state passed into it!
+function resetState(currentState, prevWinner) {
+        currentState.playerHand = [1,2,3,4,5,6,7,8,9,10];
+        currentState.computerHand = [1,2,3,4,5,6,7,8,9,10];
+        currentState.playerScore = 0;
+        currentState.computerScore = 0;
+        currentState.playerChoice = -1;
+        currentState.computerChoice = -1;
+        currentState.lastWinner = prevWinner;
+  return currentState;
 }
 
 function play(currentState) {
