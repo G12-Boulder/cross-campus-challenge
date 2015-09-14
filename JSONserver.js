@@ -20,13 +20,15 @@ var server = http.createServer(function (req, res) {
     if (urlKeys.pathname == '/api/gamestate') {
       if (currentState.playerScore >= 5) {
         resetState(currentState, "Player");
+        jsonResponse.message = "Game reset.";
       }
       if (currentState.computerScore >= 5) {
         resetState(currentState, "Computer");
+        jsonResponse.message = "Game reset.";
       }
       if(currentState.playerHand.indexOf(Number(urlKeys.query.move)) == -1
           && urlKeys.query.move != null ) {
-            jsonResponse.error = "You must pick a number from "
+            jsonResponse.message = "You must pick a number from "
               + "the available numbers in the playerHand.  Unavailable numbers "
               + "are ignored.  The list of available numbers follows as playerHand ";
       }
@@ -43,7 +45,7 @@ var server = http.createServer(function (req, res) {
       jsonResponse.computerScore = currentState.computerScore;
       jsonResponse.playerLastMove = currentState.playerChoice;
       jsonResponse.computerLastMove = currentState.computerChoice;
-      jsonResponse.howto = "If you wish to make a move, "
+      jsonResponse.message = "If you wish to make a move, "
         + "use a query string, in the form /api/gamestate?move=#";
       jsonResponse.lastWinner = currentState.lastWinner;
 
