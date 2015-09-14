@@ -1,9 +1,6 @@
 // USAGE: node serverJSON.js <port #>
 // JSON server, this file is to be run in node only.
-// It uses the game logic copy pasta'd from web version unless someone
-// decides that the game logic can be modularized
-// route something like /api/gamestate?move=#
-
+// route: /api/gamestate?move=#
 // if we give different bots a server, they should be able to play against
 // eachother with GET requests and query strings
 
@@ -155,3 +152,4 @@ function makeRatio(opponentArray, number, comparisonFn) {
   }
   return go(opponentArray, number, 0);
 }
+
