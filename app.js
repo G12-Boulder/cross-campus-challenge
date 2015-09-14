@@ -12,7 +12,7 @@ var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
 
 function play(){
   var playerNum = chooseANumber();
-  var computerNum = computerLogic();
+  var computerNum = computerChoice();
   compare(playerNum, computerNum);
   updateMoves(playerMovesLeft, playerNum);
   updateMoves(computerMovesLeft, computerNum);
@@ -81,6 +81,7 @@ function computerChoice() {
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
   var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
+  console.log(myLateWeightArray);
   if (computerMovesLeft.length == 10) {
     return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
   }
