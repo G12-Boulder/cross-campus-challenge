@@ -27,10 +27,18 @@ var server = http.createServer(function (req, res) {
       if (currentState.computerScore >= 5) {
         resetState(currentState, "Computer");
       }
-      if (urlKeys.query.move != null) {
-        currentState.playerChoice = urlKeys.query.move;
-        currentState.computerChoice = generateComputerChoice(currentState);
-        currentState = play(currentState); // play(currstate) does most state modification.
+      if(currentState.playerHand.indexOf(Number(urlKeys.query.move)) == -1
+          && urlKeys.query.move != null ) {
+            jsonResponse.error = "You must pick a number from "
+              + "the available numbers in the playerHand.  Unavailable numbers "
+              + "are ignored.  The list of available numbers follows as playerHand ";
+      }
+      if (urlKeys.query.move != null ) {
+          if(currentState.playerHand.indexOf(Number(urlKeys.query.move)) != -1)  {
+            currentState.playerChoice = urlKeys.query.move;
+            currentState.computerChoice = generateComputerChoice(currentState);
+            play(currentState); // play(currstate) does most state modification.
+        }
       }
       jsonResponse.playerHand = currentState.playerHand;
       jsonResponse.computerHand = currentState.computerHand;
@@ -68,7 +76,6 @@ function play(currentState) {
     scoreRound(currentState);
     updateHand(currentState);
   }
-  return currentState;
 }
 
 // side effects onto currentState
@@ -85,7 +92,6 @@ function scoreRound(currentState) { // each result is mutually exclusive
   else if (currentState.playerChoice > currentState.computerChoice) {
     currentState.computerScore++;
   }
-  return currentState;
 } // ty to whoever wrote the logic for this.
 
 
@@ -95,8 +101,6 @@ function updateHand(currentState) {
 
   currentState.computerHand.splice(
       currentState.computerHand.indexOf(Number(currentState.computerChoice)), 1);
-
-  return currentState;
 }
 
 function generateComputerChoice(currentState) {
