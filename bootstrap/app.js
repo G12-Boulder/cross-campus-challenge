@@ -55,12 +55,11 @@ $(".user-selection").on("click", function() {
   compare(playerNum, computerNum);
   updateMoves(playerMoves, playerMovesLeft, playerNum);
   updateMoves(computerMoves, computerMovesLeft, computerNum);
-  // updateScoreboard(playerNum, computerNum);
 
   $(".comp-score").html(computerPoints);
   $(".user-score").html(playerPoints);
   
-  if (playerPoints >= 5 || computerPoints >= 5){
+  if (playerPoints >= 5 || computerPoints >= 5 || playerMovesLeft.length === 0){
     gameOver();
     return;
   }
@@ -157,7 +156,6 @@ function weights(array1, array2){  //this creates an array of objects for each p
 function computerLogic(){
   var expectedPlayerChoice;
   var computerWeights = weights(computerMovesLeft, playerMovesLeft);
-  console.log(computerWeights);
   var playerWeights = weights(playerMovesLeft, computerMovesLeft); //not needed, but can be used if expected player choice becomes more complex
   if (computerMovesLeft.length === 10){  //first move is 10
     return 10;
@@ -172,24 +170,23 @@ function computerLogic(){
     return each.win1 > each.lose1;
   })
   if (playerPoints >= computerPoints && playerPoints > 2){
-    console.log("Defensive Mode")
     if (safeChoice.length){  //if there are options that don't risk a -2, pick lowest of those options
       return safeChoice[0].number;
     } else {  //otherwise, assume the player will play the lowest number they have, and figure out the best response 
       expectedPlayerChoice = playerMovesLeft[0];
       if (computerMovesLeft.indexOf(expectedPlayerChoice + 1) > -1){ //play the number directly above it for a +2
-        console.log("expected Player choice: " + expectedPlayerChoice);
         return expectedPlayerChoice + 1;
       } else if (playerPoints >= 3){
         return computerMovesLeft[0];
       } else {  //otherwise, ditch the highest number it has
-        console.log("expected Player choice: " + expectedPlayerChoice);
         return computerMovesLeft[computerMovesLeft.length - 1];
       }
     }
   } else {
     if (aggroChoice.length){
-      console.log(aggroChoice)
+      if (aggroChoice[0].number === 1 && playerMovesLeft.indexOf(2) > -1){ //it won't choose 1 if the player can choose 2
+        aggroChoice.shift();
+      }
       var max = aggroChoice.length > 3 ? 3 : aggroChoice.length - 1;
       var index = Math.floor(Math.random() * max)
       return aggroChoice[index].number;
