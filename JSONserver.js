@@ -9,7 +9,7 @@
 
 var http = require('http');
 var url = require('url');
-
+var firstState = new GameState();
 var server = http.createServer(function (req, res) {
   if(req.method != 'GET') {
     res.end("Send me a GET request please.  If you would like to make a move "
@@ -17,14 +17,32 @@ var server = http.createServer(function (req, res) {
   }
   var urlKeys = url.parse(req.url, true);
   var jsonResponse = {};
-  var currentState = GameState(); // construct a fresh GameState.
+  var currentState = firstState;
   res.writeHead(200, {'Content-Type':'application/json'});
     if (urlKeys.pathname == '/api/gamestate') {
+      if (currentState.playerScore >= 5) {
+        currentState.playerHand = [1,2,3,4,5,6,7,8,9,10];
+        currentState.computerHand = [1,2,3,4,5,6,7,8,9,10];
+        currentState.playerScore = 0;
+        currentState.computerScore = 0;
+        currentState.playerChoice = -1;
+        currentState.computerChoice = -1;
+        currentState.lastWinner = 'Player';
+      }
+      if (currentState.computerScore >= 5) {
+        currentState.playerHand = [1,2,3,4,5,6,7,8,9,10];
+        currentState.computerHand = [1,2,3,4,5,6,7,8,9,10];
+        currentState.playerScore = 0;
+        currentState.computerScore = 0;
+        currentState.playerChoice = -1;
+        currentState.computerChoice = -1;
+        currentState.lastWinner = 'Player';
+        currentState.lastWinner = "Computer";
+      }
       if (urlKeys.query.move != null) {
-        // this block contains all "outside" state modification.
         currentState.playerChoice = urlKeys.query.move;
-        currentState.computerChoice = generateComputerChoice();
-        play(currentState); // play(currstate) does most state modification.
+        currentState.computerChoice = generateComputerChoice(currentState);
+        currentState = play(currentState); // play(currstate) does most state modification.
       }
       jsonResponse.playerHand = currentState.playerHand;
       jsonResponse.computerHand = currentState.computerHand;
@@ -53,44 +71,33 @@ function GameState() {  // GameState is the TYPE that all functions operate on
     playerScore:  0,
     computerScore:  0,
     playerChoice:  -1,
-    computerChoice:  -1
-    lastWinner: '';
-  }
+    computerChoice:  -1,
+    lastWinner: ''
+  };
+  // it either returns a fresh game state, or any current state passed into it!
 }
 
 function play(currentState) {
-
-  // much of the calls goes here.
-
   if (currentState.playerChoice > 0) {
-    currentState = scoreRound(currentState);
-    currentState = updateHand(currentState);
+    scoreRound(currentState);
+    updateHand(currentState);
   }
   return currentState;
-}
-
-// side effects into stateObject
-function updatePlayerChoice (currentState, choice)  {
-  stateObject.playerNum = choice;
 }
 
 // side effects onto currentState
 function scoreRound(currentState) { // each result is mutually exclusive
   if (currentState.playerChoice - currentState.computerChoice == 1) {
     currentState.playerScore += 2;
-    return currentState;
   }
   else if (currentState.playerChoice - currentState.computerChoice == -1) {
     currentState.computerScore += 2;
-    return currentState;
-  }
-  else if (currentState.playerChoice > currentState.computerChoice) {
-    currentState.playerScore++;
-    return currentState;
   }
   else if (currentState.playerChoice < currentState.computerChoice) {
+    currentState.playerScore++;
+  }
+  else if (currentState.playerChoice > currentState.computerChoice) {
     currentState.computerScore++;
-    return currentState;
   }
   return currentState;
 } // ty to whoever wrote the logic for this.
@@ -98,22 +105,22 @@ function scoreRound(currentState) { // each result is mutually exclusive
 
 function updateHand(currentState) {
   currentState.playerHand.splice(
-      playerHand.indexOf(currentState.playerChoice), 1);
+      currentState.playerHand.indexOf(Number(currentState.playerChoice)), 1);
 
   currentState.computerHand.splice(
-      computerHand.indexOf(currentState.computerChoice), 1);
+      currentState.computerHand.indexOf(Number(currentState.computerChoice)), 1);
 
   return currentState;
 }
 
-function generateComputerChoice() {
-  var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
-  var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
+function generateComputerChoice(currentState) {
+  var myLateWeightArray = sortWeightArray(weightArray(currentState), 'ltRatio');
+  var myEarlyWeightArray = sortWeightArray(weightArray(currentState), 'gtRatio');
   var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
-  if (computerMovesLeft.length == 10) {
+  if (currentState.computerHand.length == 10) {
     return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
   }
-  else if (playerMovesLeft.length > 7) {
+  else if (currentState.playerHand.length > 7) {
     return myLateWeightArray[randomOf(randMax)].numberInComputerHand;
   }
   else {
@@ -131,12 +138,12 @@ function sortWeightArray(arr, prop) { // wrapper
   })
 }
 
-function weightArray () {
-  return computerMovesLeft.map(function(element) {
+function weightArray (currentState) {
+  return currentState.computerHand.map(function(element) {
     return {
       numberInComputerHand: element,
-      ltRatio: makeRatio(playerMovesLeft, element, isGt),
-      gtRatio: makeRatio(playerMovesLeft, element, isLt)
+      ltRatio: makeRatio(currentState.playerHand, element, isGt),
+      gtRatio: makeRatio(currentState.playerHand, element, isLt)
     };
   })
   function isLt(a, b) { // pronounced a is Less than b
