@@ -6,7 +6,7 @@ body {
   font-weight: bold;
 }
 
-h1, h2, h3, th {
+h1, h2, h3, p {
   text-align: center;
 }
 
@@ -52,7 +52,7 @@ li {
 
 .mask {
   background-color: #bce8f1;
-  opacity: .8;
+  opacity: .9;
   position: fixed;
   top:0;
   left:0;
@@ -108,6 +108,32 @@ li {
   text-shadow: 1px 1px 1px #333;
 }
 
+:hover { 
+  cursor: pointer;
+}
 
+.panel {
+  box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.2);
+}
 
+p {
+  font-size: 20px;
+}
+
+.announcements {
+  font-size: 20px;
+  overflow: hidden;
+  position: relative;
+  mix-blend-mode: hard-light;
+  }
+
+.announcements:after {
+  position: absolute;
+  content: "";
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(transparent, gray);
+}
 

@@ -18,7 +18,6 @@ var smacks = {
     "Shouldn't you just quit right now?",
     "You know you can't beat me right?",
     "I'm pretty sure I have more processors than you...",
-    "My library smells of rich mahogany, I have many leather bound books...",
     "Take It!",
     "You lose compadre!"
   ],
@@ -26,13 +25,10 @@ var smacks = {
     "Umm that's like your opinion man.",
     "Dude! Not cool.",
     "You are entering a world of pain!",
-    "Hey.. Watch it! I've got a beverage here!",
     "Here comes the pain!",
     "You think you're special?!",
     "I hope you get a papercut!",
-    "You think you're better than me?!",
-    "I hope a bear eats your face and genitals; genitals first",
-    "rm -rf your-balls",
+    "You think you're better than me?!",   
     "mkdir I_HATE_U"  ]
 }
 
@@ -102,22 +98,22 @@ function compare(playerNum, computerNum){
 
   if (playerNum - computerNum == 1){
     playerPoints += 2;
-    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 2 points.</h2><br>');
+    $(".announcements").prepend('<p>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 2 points.</p>');
   }
   else if (computerNum - playerNum == 1){
     computerPoints += 2;
-    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 2 points.</h2><br>');
+    $(".announcements").prepend('<p>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 2 points.</p>');
   }
   else if (playerNum < computerNum){
     playerPoints++;
-    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 1 point.</h2><br>');
+    $(".announcements").prepend('<p>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Challenger received 1 point.</p>');
   }
   else if (computerNum < playerNum){
     computerPoints++;
-    $(".update").append('</h2>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 1 point.</h2><br>');
+    $(".announcements").prepend('<p>Challenger chose ' + playerNum + ' and computer chose ' + computerNum + '. Computer received 1 point.</p>');
   }
   else {
-    $(".update").append('</h2>It\'s a tie; no points awarded</h3><br>');
+    $(".announcements").prepend('<p>It\'s a tie; no points awarded</p>');
   }
   
 }
