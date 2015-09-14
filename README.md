@@ -1,6 +1,14 @@
 # Cross Campus Challenge
-You're either first or your last.
-###Fork and Clone. You know what to do.
+
+## Features of this branch:
+  * Server-side for Client-Server Architecture with JSON API interface available at /api/gamestate, and moves at /api/gamestate?move=#
+    * This makes wiring up different user interfaces three-hairs-beyond-non-trivial, a series of links, etc.
+    * This makes testing against other robots or distant humans somewhat easier.
+  * Interface and implementation are decoupled.
+  * Cleanly written internals.  155 lines with comments.
+  **TRADEOFFS
+  * You can only play one game at a time until someone codes up some CRUD for it.  (And that prob. isn't me yet).
+  * The A.I. is pretty loose cannon at this point.  Could be less random. . .
 
 ###Rules
 
@@ -16,3 +24,6 @@ The challenge is to write a script to play this game. Knowing the rules and all 
 
 Create an algorithm for the AI by EOD Monday - 1 submission per cohort!
 Instructors will test and determine the winner
+
+
+

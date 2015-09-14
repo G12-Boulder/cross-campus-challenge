@@ -1,97 +1,99 @@
-var playerMoves = [],
-    computerMoves = [],
-    playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+var isNode = new Function("try {return this===global;}catch(e){return false;}");
+var isBrowser = new Function("try {return this===window;}catch(e){return false;}");
+
+if (isNode()) {
+  var readlineSync = require('readline-sync');
+}
+var playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
     computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
-    playerPoints = 0,
-    computerPoints = 0,
-    pointsToWin = 5,
-
-    //Algorithm weight modifiers
-    // computerGets2  = the importance of trying to get a going for a move that might give the computer 2 points
-    // playerGets2 =  the importance of trying to get prevent the player from getting 2 points
-    // playerGets1 = the importance of preventing the player from getting 1 point
-    // computerGets1 = the importance of trying to get one point
-    computerGets2 = 5,
-    playerGets2 = 2,
-    playerGets1 = 1,
-    computerGets1 = 0;
-
-
+    playerScore = 0,
+    computerScore = 0,
+    pointsToWin = 5
 
 function play(){
   var playerNum = chooseANumber();
-  var computerNum = computerLogic();
+  var computerNum = computerChoice();
   compare(playerNum, computerNum);
-  updateMoves(playerMoves, playerMovesLeft, playerNum);
-  updateMoves(computerMoves, computerMovesLeft, computerNum);
-  updateScoreboard(playerNum, computerNum);
-  if (playerPoints >= pointsToWin || computerPoints >= pointsToWin || playerMovesLeft.length === 0){
+  updateMoves(playerMovesLeft, playerNum);
+  updateMoves(computerMovesLeft, computerNum);
+  printScoreboard(playerNum, computerNum);
+  if (playerScore >= pointsToWin || computerScore >= pointsToWin || playerMovesLeft.length === 0){
     gameOver();
   }
   play();
+
 }
 
-function updateMoves(movesSoFar, movesLeft, chosenNumber){
-  movesSoFar.push(chosenNumber);
+function updateMoves(movesLeft, chosenNumber){
   movesLeft.splice(movesLeft.indexOf(chosenNumber), 1);
 }
 
-function chooseANumber(){
-  var playerNum = Number(prompt('Pick a number, puny human\nYour current score is ' + playerPoints + '\nThe computer\'s current score is ' + computerPoints));
-
-  if (playerMovesLeft.indexOf(playerNum) == -1) {
-    console.log('Your number is out of range');
-    chooseANumber();
-  } else {
-    return playerNum;
+function chooseANumber() {
+  var playerNum = 0;
+  while(playerMovesLeft.indexOf(playerNum) == -1)  {
+    if (isNode()) {
+      playerNum = Number(readlineSync.question("Pick a number that isn't one of the following: "
+          + previousMoves(playerMovesLeft) + "\n"
+          + "Your current score is "
+          + playerScore + "\n"
+          + "The computer's current score is "
+          + computerScore + "\n"));
+    }
+    else if (isBrowser()) {
+      playerNum = Number(prompt('Pick a number, human\n'
+            + 'other than'
+            + previousMoves(playerMovesLeft) + "\n"
+            + 'Your current score is '
+            + playerScore
+            + '\nThe computer\'s current score is '
+            + computerScore));
+    }
   }
+  return playerNum;
 }
 
 
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
   if (playerNum - computerNum == 1){
-    playerPoints += 2;
-    console.log('Player received 2 points.  Total points: ' + playerPoints);
+    playerScore += 2;
+    console.log('Player received 2 points.  Total points: ' + playerScore);
   }
-  else if (computerNum - playerNum == 1){
-    computerPoints += 2;
-    console.log('Computer received 2 points. Total points: ' + computerPoints);
+  else if (playerNum - computerNum == -1){
+    computerScore += 2;
+    console.log('Computer received 2 points. Total points: ' + computerScore);
   }
   else if (playerNum < computerNum){
-    playerPoints++;
-    console.log('Player received 1 point.  Total points: ' + playerPoints);
+    playerScore++;
+    console.log('Player received 1 point.  Total points: ' + playerScore);
   }
   else if (computerNum < playerNum){
-    computerPoints++;
-    console.log('Computer received 1 point. Total points: ' + computerPoints);
+    computerScore++;
+    console.log('Computer received 1 point. Total points: ' + computerScore);
   }
   else {
     console.log('It\'s a tie');
   }
-
 }
 
-function computerLogic(){
-  console.log(weightArray());
-  var moveWeights = [];
-  for (var i=0;i<computerMovesLeft.length;i++){
-    var thisMove = 0;
-    if (playerMovesLeft.indexOf(computerMovesLeft[i] + 1) > -1){
-      thisMove -= playerGets2;
-    }
-    for (var j=0;j<playerMovesLeft.length;j++){
-      if (playerMovesLeft[j] < computerMovesLeft[i]){
-        playerMovesLeft[j] !== computerMovesLeft[i]-1 ? thisMove -= playerGets1 : thisMove += computerGets2;
-      }
-      else if (playerMovesLeft[j] > computerMovesLeft[i]){
-        thisMove += computerGets1;
-      }
-    }
-    moveWeights.push(thisMove);
+
+function computerChoice() {
+  var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
+  var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
+  var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
+  console.log(myLateWeightArray);
+  if (computerMovesLeft.length == 10) {
+    return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
   }
-  var bestMove = moveWeights.indexOf(Math.max.apply(Math, moveWeights))
-  return computerMovesLeft[bestMove];
+  else if (playerMovesLeft.length > 7) {
+    return myLateWeightArray[randomOf(randMax)].numberInComputerHand;
+  }
+  else {
+    return myEarlyWeightArray[randomOf(randMax)].numberInComputerHand;
+  }
+  function randomOf(max) {
+    return Math.floor(Math.random()*max);  // choose between 0 and 2
+  }
 }
 
 function compare(playerNum, computerNum){
@@ -127,18 +129,25 @@ function compare(playerNum, computerNum){
 // anyone else working on the ai algo can use this someone
 // might have use for it that I do not yet realize.
 
+function sortWeightArray(arr, prop) {
+  //usage example sortWeightArray(weightArray(), ltRatio)
+  return arr.sort(function (a,b) {
+
+    // I may include secondary sorting, so if prop = ltRatio, and
+    // a[prop] - b[prop] are ==, sort by a[otherprop] - b[otherprop]
+    return a[prop] - b[prop];
+  })
+}
+
 function weightArray () {
   return computerMovesLeft.map(function(element) {
     return {
-      numberInComputerHand : element,
+      numberInComputerHand: element,
       ltRatio: makeRatio(playerMovesLeft, element, isGt),
       gtRatio: makeRatio(playerMovesLeft, element, isLt)
     };
   })
 }
-
-//console.log("***TESTING*** Weight Array Changes with each turn?");
-//console.log(weightArray());
 
 function makeRatio(opponentArray, number, comparisonFn) {
   // returns the percentage of the numbers lower than the numbers
@@ -159,31 +168,49 @@ function isGt(a, b) {
 }
 
 function gameOver(){
-  if (playerPoints >= pointsToWin){
+  if (playerScore >= pointsToWin){
     console.log('Player wins');
-  } else if (computerPoints >= pointsToWin) {
+  } else if (computerScore >= pointsToWin) {
     console.log('Computer wins')
   } else if (playerMovesLeft.length === 0) {
     console.log('Tie game.')
   }
-  playerMoves = [];
-  computerMoves = [];
-  playerPoints = 0;
-  computerPoints = 0;
-  return;
+  playerScore = 0;
+  computerScore = 0;
+  playerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+  computerMovesLeft = [1,2,3,4,5,6,7,8,9,10],
+  pointsToWin = 5
+  console.log("Game restarted");
 }
 
-function updateScoreboard(playerNum, computerNum){
-  console.log('Player chose ' + playerNum);
-  console.log('Computer chose ' + computerNum);
-  console.log('Player moves so far  ' + playerMoves);
-  console.log('Computer moves so far ' + computerMoves);
-  console.log('player moves left: ' + playerMovesLeft);
-  console.log('computer moves left: ' + computerMovesLeft);
+function previousMoves(remainingMoves) {
+  // given an array of the remaining moves,
+  // returns an array of the moves that have already been made
+  function go(movesCollection, counter) {
+    if (counter == 11) { return movesCollection; }
+    if (remainingMoves.indexOf(counter) == -1) {
+      movesCollection.push(counter);
+    }
+    return go(movesCollection, ++counter);
+  }
+  return go([], 1);
 }
 
-var playNow = confirm('Are you ready to play?');
-if (playNow == true){
+function printScoreboard(playerNum, computerNum){
+  console.log('Player chose   ' + playerNum + "\t\t"
+            + 'Computer chose ' + computerNum);
+  console.log('Availalbe player moves:   ' + playerMovesLeft);
+  console.log('Available computer moves: ' + computerMovesLeft);
+  //console.log(weightArray());
+}
+
+var playNow = '';
+if (isNode()) {
+  playNow = readlineSync.question('play?').toLowerCase();
+} else if(isBrowser()) {
+  playNow = confirm('Do you want to play?');
+}
+if (playNow != 'no' || playNow){
   play();
 }
 
