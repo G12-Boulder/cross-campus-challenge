@@ -99,20 +99,20 @@ function computerChoice() {
 function compare(playerNum, computerNum){
   console.log('-------------------------------------------------------')
   if (playerNum - computerNum == 1){
-    playerPoints += 2;
-    console.log('Player received 2 points.  Total points: ' + playerPoints);
+    playerScore += 2;
+    console.log('Player received 2 points.  Total points: ' + playerScore);
   }
   else if (computerNum - playerNum == 1){
-    computerPoints += 2;
-    console.log('Computer received 2 points. Total points: ' + computerPoints);
+    computerScore += 2;
+    console.log('Computer received 2 points. Total points: ' + computerScore);
   }
   else if (playerNum < computerNum){
-    playerPoints++;
-    console.log('Player received 1 point.  Total points: ' + playerPoints);
+    playerScore++;
+    console.log('Player received 1 point.  Total points: ' + playerScore);
   }
   else if (computerNum < playerNum){
-    computerPoints++;
-    console.log('Computer received 1 point. Total points: ' + computerPoints);
+    computerScore++;
+    console.log('Computer received 1 point. Total points: ' + computerScore);
   }
   else {
     console.log('It\'s a tie');
