@@ -3,7 +3,7 @@ Galvanize G12 number game AI repository
 
 
 #Hello and welcome!
-To pit algo1 vs algo2, run node runner.js ./&gtalgo1.js&lt ./&ltalgo2.js&gt
+To pit algo1 vs algo2, run node runner.js ./algo1.js ./algo2.js
 
 The algos play against eachother 1000 times, and the games counted and printed to the console at the end of the run.
 
