@@ -3,18 +3,19 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
   var playerMovesLeft = invertMovesArray(theirMovesUsed);
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
-  var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
-  //used for making decision less deterministicly vs. humans; tweakable
+  // var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
+  // used for making decision less deterministicly vs. humans; tweakable
 
   if (computerMovesLeft.length == 10) {
     return [6,7,8][randomOf(3)]; // aka, 6 7 or 8 randomly
-  }
-  else if (playerMovesLeft.length > 7) {
-    return myLateWeightArray[randomOf(randMax)].numberInComputerHand;
-  }
+  }                               // actually mostly irrelevent
+                        // setting this magic number to 8 optimizes vs skynet
+  else if (playerMovesLeft.length > 8) { // 9 or 10 optimizes against random
+    return myLateWeightArray[0].numberInComputerHand;
+  } // vs humans, adding [randomof(randMax)] can add some unpredictability.
   else {
     return myEarlyWeightArray[0].numberInComputerHand;
-  }
+  }    // same goes here vs. humans
   function randomOf(max) {
     return Math.floor(Math.random()*max);  // choose between 0 and 2
   }
