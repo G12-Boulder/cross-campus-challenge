@@ -9,4 +9,4 @@ function getRandomChoice() {
   }
 }
 
-module.exports = strategy;
+module.exports = getRandomChoice;
