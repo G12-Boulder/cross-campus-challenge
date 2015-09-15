@@ -34,13 +34,13 @@ function resetBoard() {
 function calculateWinner() {
   if (score1 > score2) {
     wins1++;
-    console.log('Algorithm 1 wins!');
+    //console.log('Algorithm 1 wins!');
   } else if (score2 > score1) {
     wins2++;
-    console.log('Algorithm 2 wins!');
+    //console.log('Algorithm 2 wins!');
   } else {
     ties++;
-    console.log('Tie!');
+    //console.log('Tie!');
   }
 }
 
