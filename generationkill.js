@@ -3,8 +3,8 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
   var playerMovesLeft = invertMovesArray(theirMovesUsed);
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
-  var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
-
+  //var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
+  //used for making th decisions less deterministicly vs. humans; tweakable
   if (computerMovesLeft.length == 10) {
     return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
   }
