@@ -57,7 +57,7 @@ for (var i = 0; i < iterations; i++) {
   resetBoard();
 }
 
-console.log('Wins for algorithm 1: ' + wins1);
-console.log('Wins for algorithm 2: ' + wins2);
+console.log('Wins for Algo1: ' + wins1);
+console.log('Wins for Algo2: ' + wins2);
 console.log('Ties: ' + ties);
 
