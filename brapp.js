@@ -2,7 +2,7 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
   var computerMovesLeft = invertMovesArray(ourMovesUsed);
   var playerMovesLeft = invertMovesArray(theirMovesUsed);
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
-  var myEarlyWeightArray = sortWeightArray(myLateWeightArray, 'gtRatio');
+  var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
   // var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
   // used for making decision less deterministicly vs. humans; tweakable
 
