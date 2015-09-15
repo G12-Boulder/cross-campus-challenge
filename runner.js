@@ -1,5 +1,5 @@
 var algo1 = require(process.argv[2])();
-var algo2 = require(process.argv[3]);
+var algo2 = require(process.argv[3])();
 
 var iterations = 1000;
 var wins1 = 0;

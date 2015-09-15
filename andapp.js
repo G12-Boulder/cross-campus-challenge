@@ -1,5 +1,3 @@
-
-
 function computerLogic(computerMovesUsed, playerMovesUsed, computerPoints, playerPoints){
   function weights(array1, array2){  //this creates an array of objects for each possible move left
     var output = [];
@@ -77,6 +75,8 @@ function computerLogic(computerMovesUsed, playerMovesUsed, computerPoints, playe
   }
 }
 
+function getComputerLogic() {
+  return computerLogic;
+}
 
-
-module.exports = computerLogic;
+module.exports = getComputerLogic;

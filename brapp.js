@@ -80,5 +80,8 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
   }
 }
 
+function getBrappPick() {
+  return computerChoice;
+}
 
-module.exports = computerChoice;
+module.exports = getBrappPick;
