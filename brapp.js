@@ -3,13 +3,14 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
   var playerMovesLeft = invertMovesArray(theirMovesUsed);
   var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
   var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
-  var randMax = (myLateWeightArray.length > 1) ? 1 : 0;
-  //used for making th decisions less deterministicly vs. humans; tweakable
+  var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
+  //used for making decision less deterministicly vs. humans; tweakable
+
   if (computerMovesLeft.length == 10) {
-    return [6,7,8][randomOf(3)] // aka, 6 7 or 8 randomly
+    return [6,7,8][randomOf(3)]; // aka, 6 7 or 8 randomly
   }
-  else if (playerMovesLeft.length > 6) {
-    return myLateWeightArray[randomOf(1)].numberInComputerHand;
+  else if (playerMovesLeft.length > 7) {
+    return myLateWeightArray[randomOf(randMax)].numberInComputerHand;
   }
   else {
     return myEarlyWeightArray[0].numberInComputerHand;
