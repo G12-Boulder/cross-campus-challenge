@@ -16,7 +16,7 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
     return sortWeightArray(weightArray(), 'gtRatio')[0].numberInComputerHand;
   }    // same goes here vs. humans
   function randomOf(max) {
-    return Math.floor(Math.random() * max);  // choose between 0 and 2
+    return Math.floor(Math.random() * max);  // choose between 0 and max
   }
 
   // Sooooo here's some spec:
