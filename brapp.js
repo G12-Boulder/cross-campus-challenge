@@ -1,23 +1,22 @@
 function computerChoice(ourMovesUsed, theirMovesUsed) {
   var computerMovesLeft = invertMovesArray(ourMovesUsed);
   var playerMovesLeft = invertMovesArray(theirMovesUsed);
-  var myLateWeightArray = sortWeightArray(weightArray(), 'ltRatio');
-  var myEarlyWeightArray = sortWeightArray(weightArray(), 'gtRatio');
+
   // var randMax = (myLateWeightArray.length > 1) ? 2 : 0;
   // used for making decision less deterministicly vs. humans; tweakable
 
   if (computerMovesLeft.length == 10) {
     return [6,7,8][randomOf(3)]; // aka, 6 7 or 8 randomly
   }                               // actually mostly irrelevent
-                        // setting this magic number to 8 optimizes vs skynet
+  // setting this magic number to 8 optimizes vs skynet
   else if (playerMovesLeft.length > 8) { // 9 or 10 optimizes against random
-    return myLateWeightArray[0].numberInComputerHand;
+    return sortWeightArray(weightArray(), 'ltRatio')[0].numberInComputerHand;
   } // vs humans, adding [randomof(randMax)] can add some unpredictability.
   else {
-    return myEarlyWeightArray[0].numberInComputerHand;
+    return sortWeightArray(weightArray(), 'gtRatio')[0].numberInComputerHand;
   }    // same goes here vs. humans
   function randomOf(max) {
-    return Math.floor(Math.random()*max);  // choose between 0 and 2
+    return Math.floor(Math.random() * max);  // choose between 0 and 2
   }
 
   // Sooooo here's some spec:
@@ -32,22 +31,22 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
 
   function sortWeightArray(arr, prop) {
     //usage example sortWeightArray(weightArray(), ltRatio)
-    return arr.sort(function (a,b) {
+    return arr.sort(function(a, b) {
 
       // I may include secondary sorting, so if prop = ltRatio, and
       // a[prop] - b[prop] are ==, sort by a[otherprop] - b[otherprop]
       return a[prop] - b[prop];
-    })
+    });
   }
 
-  function weightArray () {
+  function weightArray() {
     return computerMovesLeft.map(function(element) {
       return {
         numberInComputerHand: element,
         ltRatio: makeRatio(playerMovesLeft, element, isGt),
         gtRatio: makeRatio(playerMovesLeft, element, isLt)
       };
-    })
+    });
   }
 
   function makeRatio(opponentArray, number, comparisonFn) {
@@ -57,7 +56,7 @@ function computerChoice(ourMovesUsed, theirMovesUsed) {
       if (array.length == 0) { return (ratioNumer / opponentArray.length); }
 
       if (comparisonFn(array[0], num)) { ratioNumer += 1; }
-      return go(array.slice(1), num, ratioNumer)
+      return go(array.slice(1), num, ratioNumer);
     }
     return go(opponentArray, number, 0);
   }
